@@ -5,7 +5,7 @@ import { categories } from './barbers.js';
 import { isUuid,calendarDate,bookingDates } from './slots.js';
 import { normalizePhone,localDate } from './ui.js';
 import { t } from './i18n.js';
-const shopFields='id,owner_id,shop_name,city,district,address,map_url,phone,whatsapp,bio,photo_url,avg_rating,review_count,is_active,created_at';
+const shopFields='id,owner_id,shop_name,city,district,address,map_url,phone,whatsapp,bio,photo_url,avg_rating,review_count,is_active,created_at,cancel_hours_before';
 const serviceFields='id,barber_id,name,category,price,currency,duration_min,is_active';
 const fail=key=>{const error=new Error(t(key));error.userMessage=t(key);return error;};
 function result(response){if(response.error)throw response.error;return response.data;}
@@ -21,6 +21,7 @@ export function validateShop(values){
   if(Object.keys(fields).length)throw new FormError(fields);return input;
 }
 export async function saveShop(values){const context=await owner();const current=await getOwnedShop();const input=validateShop(values);
+  if(values.cancelHours!==undefined){const hours=Number(values.cancelHours);if(String(values.cancelHours).trim()===''||!Number.isInteger(hours)||hours<0||hours>8760)throw new FormError({cancelHours:t('manual.cancelHoursError')});input.cancel_hours_before=hours;}
   let request=current?supabase.from('barbers').update(input).eq('id',current.id).eq('owner_id',context.user.id):supabase.from('barbers').insert({...input,owner_id:context.user.id});
   const saved=result(await request.select(shopFields).maybeSingle());if(!saved)throw fail('error.recordChanged');return saved;
 }
@@ -57,7 +58,8 @@ export async function addClosedDate(date,reason=''){calendarDate(date);if(date<l
 export async function removeClosedDate(id){if(!isUuid(id))throw fail('error.validation');const current=await shop();const value=result(await supabase.from('closed_dates').delete().eq('id',id).eq('barber_id',current.id).select('id').maybeSingle());if(!value)throw fail('error.recordChanged');}
 export async function getDashboard(){const current=await shop();return result(await supabase.rpc('get_barber_dashboard',{p_barber_id:current.id}));}
 export async function getRequests({view='today',status='',page=1}={}){const current=await shop();return result(await supabase.rpc('get_barber_appointments',{p_barber_id:current.id,p_view:view,p_status:status,p_page:page}));}
-export async function manageRequest(id,status,{note='',proposedStart}={}){if(!isUuid(id)||!['confirmed','rejected','counter_proposed','cancelled','completed'].includes(status)||typeof note!=='string'||note.length>1000)throw fail('error.validation');
+export async function manageRequest(id,status,{note='',proposedStart}={}){if(!isUuid(id)||!['confirmed','rejected','counter_proposed','cancelled','completed','no_show'].includes(status)||typeof note!=='string'||note.length>1000)throw fail('error.validation');
+  if(status==='cancelled'&&!note.trim())throw new FormError({note:t('manual.cancelReason')});
   if(status==='rejected'&&!note.trim())throw new FormError({note:t('panel.rejectHint')});if(status==='counter_proposed'&&(!proposedStart||!/(Z|[+-]\\d{2}:\\d{2})$/.test(proposedStart)||Date.parse(proposedStart)<=Date.now()||!Number.isFinite(Date.parse(proposedStart))))throw new FormError({startAt:t('error.slotRequired')});
   const current=await shop();const input={status,...(note?{barber_note:note.trim()}:{}),...(status==='counter_proposed'?{proposed_start_at:proposedStart}:{})};
   const value=result(await supabase.from('appointments').update(input).eq('id',id).eq('barber_id',current.id).select('id,status,start_at,end_at,proposed_start_at').maybeSingle());if(!value)throw fail('error.staleAppointment');return value;

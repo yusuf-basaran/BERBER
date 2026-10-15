@@ -14,7 +14,7 @@
 
 @media(max-width:980px){
   .nav-toggle{display:inline-flex;align-items:center;justify-content:center}
-  .site-header .site-nav{display:none;position:absolute;top:calc(100% - 1px);left:18px;right:18px;background:var(--surface);border:1px solid var(--control-border);border-radius:10px;padding:12px;z-index:25;box-shadow:0 16px 40px #0008;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .site-header .site-nav{display:none;position:absolute;top:calc(100% - 1px);left:18px;right:18px;background:var(--surface);border:1px solid var(--control-border);border-radius:10px;padding:12px;z-index:25;box-shadow:var(--golge);grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
   .site-header .site-nav.is-open{display:grid}
   .nav-tools .notification-bell>span:not(.notification-count){position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
   .site-nav a,.site-nav button{justify-content:flex-start;font-size:14px;min-height:44px}
@@ -54,3 +54,10 @@
 }
 @media(max-height:600px){.modal{margin:16px auto}.account-story{position:static}.booking-panel{position:static}}
 
+
+h1,.browse-hero h1,.detail-info h1,.legal-card h1,.security-layout h1,.account-story h2{font-size:clamp(1.953125rem,4vw,2.44140625rem);line-height:1.25}
+h2,.barber-card h2,.results-heading h2,.detail-columns h2,.appointment-heading h2{font-size:1.953125rem;line-height:1.25}
+h3,.service-row h3,.notification-card h3,.booking-summary h3{font-family:var(--heading);font-weight:600;font-size:1.5625rem;line-height:1.25}
+h4{font-size:1.25rem}
+.role-choice,.slot-choice span,.slot-option,.review-star-choice>span:not(.sr-only){min-height:44px;min-width:44px}
+@media(max-width:720px){.intro,.notice,.appointment-note,.appointment-facts,.review-card,.browse-hero .intro,.detail-info>p:not(.eyebrow){font-size:1rem}}

@@ -53,7 +53,7 @@ function detail(value) {
   container.replaceChildren(element('div',{className:'detail-hero'},[shopPhoto(value,{large:true}),element('div',{className:'detail-info'},[
     element('p',{text:t('barber.location',{city:value.city,district:value.district}),className:'eyebrow'}),element('h1',{text:value.shop_name}),
     element('p',{text:value.review_count?`${t('barber.ratingLabel',{rating:Number(value.avg_rating).toLocaleString('tr-TR')})} · ${t('barber.reviewsCount',{count:value.review_count})}`:t('barber.noReviews')}),element('p',{text:value.address,className:'intro'}),contacts
-  ])]),element('section',{className:'detail-section'},[element('h2',{text:t('barber.about')}),element('p',{text:value.bio})]));
+  ])]),element('section',{className:'detail-section'},[element('h2',{text:t('barber.about')}),element('p',{text:value.bio}),element('p',{text:t(Number(value.cancel_hours_before??2)===0?'manual.cancelUnlimited':'manual.cancelPolicy',{hours:value.cancel_hours_before??2}),className:'notice'})]));
   const services=document.querySelector('[data-services]');services.replaceChildren(...value.services.map(item=>{
     const button=element('button',{text:t('barber.chooseService'),className:'text-button',attrs:{type:'button',disabled:demo||!value.is_active}});
     button.addEventListener('click',()=>{form.elements.serviceId.value=item.id;panel.scrollIntoView({block:'start'});void slots();});

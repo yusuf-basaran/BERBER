@@ -1,5 +1,7 @@
 # BERBER
 
+V2 randevu yönetimi ve tasarım güncellemesi için [aşama notlarına](V2-ASAMA-2.md) bakın. Mevcut projede yalnızca `supabase/v2_01_randevu_yonetimi.sql` uygulanır; V1 SQL dosyaları yeniden çalıştırılmaz.
+
 KKTC için berber bulma, randevu, dükkan yönetimi, bildirim ve yorum uygulaması. HTML, CSS ve tarayıcıda çalışan ES modülleri kullanır. Derleme gerekmez. İş takvimi `Europe/Nicosia` saat dilimindedir.
 
 ## Bağlantı

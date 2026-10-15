@@ -14,7 +14,7 @@ async function change(appointment,status,control) {
   const question=status==='cancelled'?t('appointments.cancelConfirm'):status==='confirmed'?t('appointments.acceptConfirm',{time:formatDateTime(appointment.proposed_start_at)}):t('appointments.rejectConfirm');
   control.disabled=true;
   try{if(!await confirmAction(question))return;await changeAppointment(appointment.id,status);toast(t('appointments.updated'),{type:'success'});await load();}
-  catch(error){toast(errorMessage(error),{type:'error'});}finally{control.disabled=false;}
+  catch(error){toast(errorMessage(error),{type:'error'});if(error.code==='P2001')await load();}finally{control.disabled=false;}
 }
 function card(appointment,review,reviewError) {
   const shop=appointment.barber;const contents=[
@@ -31,7 +31,14 @@ function card(appointment,review,reviewError) {
     actions.append(button('appointments.rejectProposal',control=>change(appointment,'rejected',control)));
   }
   const start=appointment.status==='counter_proposed'?appointment.proposed_start_at:appointment.start_at;
-  if(['pending','confirmed','counter_proposed'].includes(appointment.status)&&Date.parse(start)>Date.now())actions.append(button('appointments.cancel',control=>change(appointment,'cancelled',control)));
+  if(['pending','confirmed','counter_proposed'].includes(appointment.status)&&Date.parse(start)>Date.now()){
+    const hours=Number(shop?.cancel_hours_before??2),allowed=hours===0||Date.parse(start)-Date.now()>=hours*3600000;
+    if(allowed)actions.append(button('appointments.cancel',control=>change(appointment,'cancelled',control)));
+    else {contents.push(element('p',{text:t('manual.cancelClosed'),className:'notice'}));
+      if(/^\+90\d{10}$/.test(shop?.phone||''))actions.append(element('a',{text:t('barber.call'),className:'button button--secondary',attrs:{href:'tel:'+shop.phone}}));
+      if(/^\+905\d{9}$/.test(shop?.whatsapp||''))actions.append(element('a',{text:t('barber.whatsapp'),className:'button button--secondary',attrs:{href:'https://wa.me/'+shop.whatsapp.slice(1),target:'_blank'}}));
+    }
+  }
   if(shop)actions.append(element('a',{text:t('barber.detail'),className:'text-button',attrs:{href:pageUrl('barber',{id:shop.id})}}));
   if(appointment.status==='completed'){
     if(review)contents.push(reviewCard(review,{mine:true}));

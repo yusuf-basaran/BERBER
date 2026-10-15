@@ -91,6 +91,8 @@ const errorKeys = {
   PGRST205: 'error.schema', PGRST202: 'error.schema', '42P01': 'error.schema'
 };
 export function errorMessage(error, fallback = 'error.generic') {
+  if(error?.code==='P2001')return t('manual.cancelClosed');
+  if(error?.code==='P2002')return t('manual.unavailable');
   if (error?.userMessage) return error.userMessage;
   if (error?.status === 429) return t('error.rateLimit');
   if (errorKeys[error?.code]) return t(errorKeys[error.code]);
