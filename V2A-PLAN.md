@@ -1,6 +1,6 @@
 # Berber onayı, müşteri profili ve özel müşteri kartı
 
-Bu belge yeni paketin planıdır. A1 + A3 altyapısı [ikinci aşamada](V2A-ASAMA-2.md), A4 yönetim paneli ve karar fonksiyonu [üçüncü aşamada](V2A-ASAMA-3.md) tamamlandı. Sonraki aşama A2 + A3 başvuru arayüzüdür. Mevcut kaynaklar çalışma alanında bulunduğundan tekrar dosya gönderilmesi gerekmez.
+Bu belge yeni paketin planıdır. A1 + A3 altyapısı [ikinci aşamada](V2A-ASAMA-2.md), A4 yönetim paneli ve karar fonksiyonu [üçüncü aşamada](V2A-ASAMA-3.md) tamamlandı. A2 + A3 başvuru arayüzü, müşteri profili ve özel müşteri kartı V2A-ASAMA-4-6.md kapsamında tamamlandı. Genişletilmiş F1–F26 kapsamı GENISLETME-DENETIMI.md ile izlenir. Mevcut kaynaklar çalışma alanında bulunduğundan tekrar dosya gönderilmesi gerekmez.
 
 ## Mevcut yapıdan bulgular
 

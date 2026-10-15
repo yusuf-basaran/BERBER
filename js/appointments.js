@@ -14,7 +14,7 @@ export async function requestAppointment({barberId,serviceId,startAt,note=''}) {
   const fields={};if(!isUuid(barberId)||!isUuid(serviceId))fields.serviceId=t('error.validation');
   if(!Number.isFinite(Date.parse(startAt))||Date.parse(startAt)<=Date.now()||! /T.*(Z|[+-]\d{2}:?\d{2})$/i.test(startAt||''))fields.startAt=t('error.slotRequired');
   if(typeof note!=='string'||note.length>1000)fields.note=t('error.noteLength');if(Object.keys(fields).length)throw new FormError(fields);
-  const id=await customer();
+  const id=await customer();const profile=await supabase.from('profiles').select('full_name,phone').eq('id',id).single();if(profile.error)throw profile.error;if(!profile.data?.full_name?.trim()||!/^\+90(5[0-9]{9}|392[0-9]{7})$/.test(profile.data.phone||'')){const error=fail('profile.complete');error.code='P2007';throw error;}
   const {data,error}=await supabase.from('appointments').insert({barber_id:barberId,customer_id:id,service_id:serviceId,start_at:startAt,customer_note:note.trim()}).select(appointmentFields).single();
   if(error)throw error;return data;
 }

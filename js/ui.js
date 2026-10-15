@@ -231,6 +231,7 @@ export function renderNavigation(container, context = null) {
   const links = [['home', 'nav.home']];
   if (context?.status === 'ready') {
     links.push(context.profile.role === 'barber' ? ['panel','nav.panel'] : ['appointments','nav.appointments']);
+    if(context.profile.role==='customer')links.push(['profile','profile.title']);
     links.push(['favorites','nav.favorites'], ['security','nav.security']);
   } else if (context?.status === 'mfa_required') {
     links.push(['login','auth.verifyTitle']);

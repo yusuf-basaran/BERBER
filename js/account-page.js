@@ -1,3 +1,4 @@
+import {registrationApplication} from './application.js';
 import { auth, FormError, destination, consumeAuthCallback } from './auth.js';
 import { pageUrl } from './config.js';
 import { mfa } from './mfa.js';
@@ -60,8 +61,10 @@ function revealResend(email = '') {
 
 if (root.dataset.account === 'register') {
   const form = document.getElementById('register-form');
+  const prepareApplication=registrationApplication(form);
   submit(form, async values => {
-    await auth.signUp({ ...values, termsAccepted: form.elements.termsAccepted.checked, privacyAccepted: form.elements.privacyAccepted.checked });
+    const shopApplication=await prepareApplication(values);
+    await auth.signUp({ ...values, shopApplication, termsAccepted: form.elements.termsAccepted.checked, privacyAccepted: form.elements.privacyAccepted.checked });
     form.elements.password.value = ''; form.elements.passwordAgain.value = '';
     form.hidden = true;
     document.querySelector('[data-registration-success]').hidden = false;

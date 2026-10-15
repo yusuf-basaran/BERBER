@@ -117,7 +117,7 @@ export function createAuthManager(client) {
       email: input.email, password: input.password,
       options: {
         emailRedirectTo: pageUrl('login', { verified: '1' }),
-        data: { role: input.role, full_name: input.fullName, phone: input.phone, terms_accepted: true, privacy_accepted: true }
+        data: { role: input.role, full_name: input.fullName, phone: input.phone, terms_accepted: true, privacy_accepted: true, ...(input.role==='barber'&&values.shopApplication?{shop_application:values.shopApplication}:{}) }
       }
     }));
     invalidate();

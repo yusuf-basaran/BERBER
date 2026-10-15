@@ -314,6 +314,19 @@ Object.assign(tr,{
   'gallery.limit':'Bir dükkanda en fazla 12 fotoğraf olabilir. Önce mevcut veya yarım kalan bir kaydı silin.',
   'gallery.uploading':'Fotoğraf yükleniyor: {count} / {total}'
 });
+Object.assign(tr,{
+'application.title':'Dükkan başvurusu','application.registration':'Başvurun incelendikten sonra dükkanın yayına alınır.','application.phone':'Dükkan telefonu','application.instagram':'Instagram profil bağlantısı (isteğe bağlı)',
+'application.photoAfterConfirmation':'Fotoğraf bu cihazda en fazla 7 gün saklanır. E-posta doğrulaması sonrası aynı tarayıcıdan panele girdiğinde yüklenir; başka cihazda yeniden seçebilirsin.',
+'application.locationError':'Konumlar yüklenemedi. Sayfayı yenileyip tekrar dene.','application.instagramError':'Geçerli bir Instagram profil bağlantısı gir.','application.cacheError':'Fotoğraf bu tarayıcıda saklanamadı. Depolamaya izin verip tekrar dene.',
+'application.draft':'Başvurunu tamamla: dükkan bilgilerini ve fotoğrafını kontrol edip incelemeye gönder.','application.submit':'İncelemeye gönder','application.resubmit':'Düzenledim, yeniden gönder','application.confirm':'Başvurun bu bilgilerle incelemeye gönderilsin mi?','application.count':'Başvuru: {count} / 3','application.contact':'Başvuruna ilişkin destek için yönetimin gönderdiği bildirimdeki gerekçeyi incele. Yeni hesap açmadan yönetimle iletişime geç.'
+});
+Object.assign(tr,{'document.title':'Dükkan doğrulama belgesi (isteğe bağlı)','document.hint':'İşyeri ruhsatı veya esnaf odası belgesi doğrulamayı hızlandırır. JPEG, PNG veya WebP, en fazla 5 MB. Yalnızca sen ve doğrulanmış yönetici görebilir. Karardan 30 gün sonra otomatik silinir.','document.view':'Belgeyi 60 saniyelik bağlantıyla görüntüle','document.select':'Belge fotoğrafı seç','document.retryDelete':'Silmeyi yeniden dene'});
+Object.assign(tr,{
+'profile.title':'Profilim','profile.preference':'Berbere notum','profile.visibility':'Hizmet tercihin randevu sürecinde ilgili berberle paylaşılır.','profile.warning':'Sağlık, din, siyasi görüş gibi özel bilgiler yazma, yalnızca hizmetle ilgili tercihlerini yaz.','profile.noteLength':'Tercih notu en fazla 300 karakter olabilir.','profile.complete':'Randevu öncesi profilindeki ad ve telefonu tamamla.',
+'cards.title':'Müşterilerim','cards.open':'Müşteri kartı','cards.search':'Müşteri ara','cards.total':'Toplam randevu','cards.completed':'Tamamlanan','cards.customer_cancelled':'Müşteri iptali','cards.no_show':'Gelmedi','cards.first_visit':'İlk ziyaret','cards.last_visit':'Son ziyaret','cards.favorite_service':'En çok seçilen hizmet','cards.customerNote':'Müşterinin notu','cards.privateNote':'Senin özel notun','cards.privateHint':'Bu notu ve etiketleri yalnızca sen görürsün. Hizmetle ilgili gerekli bilgileri yaz.','cards.noNote':'Not bulunmuyor.','cards.tags':'Etiketler (virgülle ayır, en fazla 5)','cards.validation':'En fazla 1000 karakter not ve her biri en fazla 20 karakter olan 5 etiket gir.','cards.visits':'{count} randevu','cards.hasNote':'Not var'
+});
+Object.assign(tr,{'privacy.serviceNotes':'Hizmet tercihleri','privacy.serviceNotesText':'Berberler randevu hizmetiyle ilgili özel not tutabilir; bilgiler yalnızca ilgili berberle paylaşılır.','privacy.noShowText':'Gelmeyen randevu sayısı, hangi dükkanda olduğu açıklanmadan ilgili berberlere yalnızca sayı olarak gösterilir.'});
+Object.assign(tr,{'application.support':'Yönetime destek mesajı gönder','application.supportMessage':'Mesajın (10–1000 karakter, günde bir mesaj)','cards.first':'İlk kez','cards.repeat':'Tekrar müşteri'});
 export const dictionaries = Object.freeze({
   tr: Object.freeze(tr),
   en: Object.freeze(Object.fromEntries(Object.keys(tr).map(key => [key, ''])))

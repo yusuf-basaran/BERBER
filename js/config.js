@@ -13,7 +13,7 @@ export const config = Object.freeze({
 const pages = Object.freeze({
   home: 'index.html', barber: 'berber.html', login: 'giris.html', register: 'kayit.html',
   favorites: 'favoriler.html', appointments: 'randevularim.html', panel: 'panel.html', security: 'guvenlik.html',
-  terms: 'kosullar.html', privacy: 'kisisel-veri.html', admin:'admin.html'
+  profile:'profil.html', customers:'musteriler.html', terms: 'kosullar.html', privacy: 'kisisel-veri.html', admin:'admin.html'
 });
 
 export function pageUrl(page, params = {}) {

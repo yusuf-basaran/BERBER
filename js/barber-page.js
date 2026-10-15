@@ -82,7 +82,7 @@ form.addEventListener('submit',event=>{
       const startAt=form.elements.startAt.value;if(!available.some(slot=>slot.start_at===startAt)||Date.parse(startAt)<=Date.now())throw new FormError({startAt:t('error.slotRequired')});
       const saved=await requestAppointment({barberId:id,serviceId:form.elements.serviceId.value,startAt,note:form.elements.note.value});
       form.hidden=true;slotBox.replaceChildren();summary.replaceChildren(element('h3',{text:t('booking.submittedTitle')}),element('p',{text:t('booking.sent')}),element('p',{text:`${formatDateTime(saved.start_at)} · ${formatMoney(saved.price_at_booking,saved.currency_at_booking)}`}),element('a',{text:t('booking.viewAppointments'),className:'button',attrs:{href:pageUrl('appointments')}}));
-    }catch(error){if(error instanceof FormError){showFormErrors(form,error.fields);message(t(error.fields.startAt?'error.slotRequired':'error.validation'),true);}else message(errorMessage(error),true);if(error.code==='23P01')await slots().then(()=>message(t('error.conflict'),true));}
+    }catch(error){if(error instanceof FormError){showFormErrors(form,error.fields);message(t(error.fields.startAt?'error.slotRequired':'error.validation'),true);}else message(errorMessage(error),true);if(error.code==='P2007')notice.append(element('a',{text:t('profile.title'),attrs:{href:pageUrl('profile')}}));if(error.code==='23P01')await slots().then(()=>message(t('error.conflict'),true));}
   });
 });
 async function initialize() {

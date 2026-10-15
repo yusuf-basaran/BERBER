@@ -412,3 +412,11 @@ input:not([type=checkbox]):not([type=radio]),select,textarea{background:var(--yu
 .admin-detail textarea{width:100%}.admin-detail .panel-form{max-width:100%;display:block}.admin-detail .panel-form>button{margin-top:var(--bosluk-4)}
 @media(min-width:768px){.admin-detail-grid{grid-template-columns:minmax(0,1fr) minmax(0,2fr)}}
 @media(max-width:520px){.admin-detail{padding:var(--bosluk-4)}.admin-toolbar>.button{flex:1 1 120px}}
+
+.application-document{margin-block:var(--bosluk-6);padding:var(--bosluk-5);background:var(--yuzey);border:1px solid var(--kenarlik);border-radius:var(--yaricap-buyuk)}
+.document-preview{display:block;max-width:100%;max-height:70vh;object-fit:contain;margin-block:var(--bosluk-4)}
+.application-document button{margin:var(--bosluk-2)}
+
+.profile-form{max-width:640px}.initial-avatar{display:grid;place-items:center;width:72px;height:72px;border:1px solid var(--bakir);border-radius:50%;background:var(--yuzey-2);color:var(--bakir);font-size:1.563rem;margin-block:var(--bosluk-5)}
+.customer-card-panel{margin-block-start:var(--bosluk-4);padding:var(--bosluk-4);border:1px solid var(--kenarlik);border-radius:var(--yaricap);background:var(--yuzey-2)}
+.customer-card-panel summary{min-height:44px;cursor:pointer;color:var(--bakir);text-decoration:underline}.private-note-form{display:grid;gap:var(--bosluk-3);max-width:640px}.customer-stats{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--bosluk-2)}.customer-stats dd{margin:0}
