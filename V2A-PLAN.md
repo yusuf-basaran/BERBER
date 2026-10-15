@@ -1,12 +1,12 @@
 # Berber onayı, müşteri profili ve özel müşteri kartı
 
-Bu belge yeni paketin ilk aşamasıdır. Uygulama henüz eklenmedi; sonraki aşama A1 + A3 migration'ıdır. Mevcut kaynaklar çalışma alanında bulunduğundan tekrar dosya gönderilmesi gerekmez.
+Bu belge yeni paketin planıdır. A1 + A3 altyapısı [ikinci aşamada](V2A-ASAMA-2.md) tamamlandı; sonraki aşama A4 admin paneli ve karar fonksiyonudur. Mevcut kaynaklar çalışma alanında bulunduğundan tekrar dosya gönderilmesi gerekmez.
 
 ## Mevcut yapıdan bulgular
 
 `profiles.role` yalnızca `customer` veya `barber` olabilir. Profil kayıt sırasında `private.create_profile()` ile oluşturulur; oturumlu kullanıcıya yalnızca `full_name` ve `phone` güncelleme izni verilir. Rol değişikliği mevcut SQL testinde reddediliyor; canlı izin kontrolü de aynı iki alanı doğruladı. Yönetici için bu rol listesi genişletilmeyecek.
 
-`barbers.owner_id` zaten UNIQUE. Canlı ön kontrolde mükerrer sahip sayısı sıfır. `barbers_read`, `services_read`, `hours_read`, `closed_dates_read` ve `reviews_read` bugün herkese açık. `public.search_barbers` invoker; `public.get_available_slots` definer olduğu için yalnızca tablo RLS değişikliği yeterli olmayacak. Slot fonksiyonu ve `private.guard_appointment` ayrıca onay durumunu denetlemeli. `private.panel_owner` sahiplik, berber rolü ve mevcut `public.mfa_ok()` kontrolünü kullanıyor.
+`barbers.owner_id` zaten UNIQUE. Canlı ön kontrolde mükerrer sahip sayısı sıfır. `barbers_read`, `services_read`, `hours_read`, `closed_dates_read` ve `reviews_read` plan başlangıcında herkese açıktı; ikinci aşamada dükkan onayına bağlandı. `public.search_barbers` invoker; `public.get_available_slots` definer olduğu için yalnızca tablo RLS değişikliği yeterli olmayacak. Slot fonksiyonu ve `private.guard_appointment` ayrıca onay durumunu denetlemeli. `private.panel_owner` sahiplik, berber rolü ve mevcut `public.mfa_ok()` kontrolünü kullanıyor.
 
 Manuel/misafir randevusu, `blocked_customers`, no-show sayısı, `favorites`, takvim çıktısı ve galeri artık mevcut. Galeri ayrı `barber-gallery` bucket'ında; onaysız dükkanın metadata INSERT ve Storage INSERT izinleri de yeni kurala bağlanmalı. Kayıt/giriş ortak `account-page.js` üzerinden çalışıyor. Mevcut kayıt formunda dükkan başvurusu alanları yok; dükkan profili panelden hazırlanıyor.
 
@@ -37,4 +37,4 @@ Her uygulama aşamasında ayrı liste verilecek. İlk migration için: eski dük
 
 ## Advisors
 
-Bu plan aşamasında yeni paket için şema değişikliği yapılmadı. Galeri sonrası raporda yeni güvenlik uyarısı yok; mevcut uyarılar ve yeni galerinin kullanılmamış indeks bilgisi V2-ASAMA-4.md içinde bağlantılarıyla listelenir. Her yeni migration sonrası rapor yeniden alınacak.
+Onay altyapısı sonrasında Advisors yeniden alındı. is_admin fonksiyonunun oturumlu definer izni ve iki yeni kullanılmamış indeks bilgisi V2A-ASAMA-2.md içinde bağlantıları ve gerekçeleriyle listelenir. Her yeni migration sonrası rapor yeniden alınacak.

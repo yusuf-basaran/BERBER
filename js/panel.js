@@ -5,7 +5,7 @@ import { categories } from './barbers.js';
 import { isUuid,calendarDate,bookingDates } from './slots.js';
 import { normalizePhone,localDate } from './ui.js';
 import { t } from './i18n.js';
-const shopFields='id,owner_id,shop_name,city,district,address,map_url,phone,whatsapp,bio,photo_url,avg_rating,review_count,is_active,created_at,cancel_hours_before';
+const shopFields='id,owner_id,shop_name,city,district,address,map_url,phone,whatsapp,bio,photo_url,avg_rating,review_count,is_active,created_at,cancel_hours_before,verification_status';
 const serviceFields='id,barber_id,name,category,price,currency,duration_min,is_active';
 const fail=key=>{const error=new Error(t(key));error.userMessage=t(key);return error;};
 function result(response){if(response.error)throw response.error;return response.data;}

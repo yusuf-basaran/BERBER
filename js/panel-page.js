@@ -12,7 +12,7 @@ import { t } from './i18n.js';
 import { element as el,formatDateTime,formatTime,formatMoney,localDate,toast,errorMessage,showErrorState,showState,withFormTask,showFormErrors,clearFormErrors,openModal,confirmAction,shopPhoto } from './ui.js';
 mountLayout();const protection=protectPage({role:'barber'});const root=document.querySelector('[data-panel]');
 let shop,context,locations=[],tab='requests',disposed=false,epoch=0,writing=false;
-const labels=['requests','manual','profile','gallery','services','hours','closed','reviews','blocked'];
+const allTabs=['requests','manual','profile','gallery','services','hours','closed','reviews','blocked'];
 const button=(key,run,primary=false)=>{const node=el('button',{text:t(key),className:`button${primary?'':' button--secondary'}`,attrs:{type:'button'}});node.addEventListener('click',()=>void run(node));return node;};
 const option=(value,text)=>el('option',{text,attrs:{value}});
 let fieldId=0;
@@ -27,6 +27,10 @@ async function mutation(control,question,run){if(writing)return;control.disabled
 async function start(){showState(root,{kind:'loading',key:'common.loading'});try{[shop,locations]=await Promise.all([api.getOwnedShop(),getLocations()]);if(disposed)return;render();void securitySuggestion();}catch(error){if(!disposed)showErrorState(root,error,()=>void start());}}
 async function securitySuggestion(){try{const result=await supabase.auth.mfa.listFactors();if(result.error||result.data.totp.some(f=>f.status==='verified')||disposed)return;let dismissed=false;try{dismissed=localStorage.getItem(`panel-security-${context.user.id}`)==='1';}catch{}if(dismissed)return;const banner=el('aside',{className:'notice'},[el('p',{text:t('panel.securityHint')}),el('a',{text:t('nav.security'),className:'text-button',attrs:{href:'./guvenlik.html'}})]);banner.append(button('common.close',()=>{try{localStorage.setItem(`panel-security-${context.user.id}`,'1');}catch{}banner.remove();}));root.prepend(banner);}catch{}}
 function render(){epoch++;root.replaceChildren();if(!shop){tab='profile';root.append(el('p',{text:t('panel.createFirst'),className:'notice'}));}else{
+  const status=shop.verification_status??'approved',restricted=status!=='approved'||!shop.is_active;
+  const labels=restricted?['profile','services','hours','closed']:allTabs;
+  if(!labels.includes(tab))tab='profile';
+  if(restricted)root.append(el('p',{text:t(status==='approved'?'approval.inactive':`approval.${status}`),className:'notice',attrs:{role:'status'}}));
   root.append(el('h2',{text:shop.shop_name}));const nav=el('div',{className:'panel-tabs',attrs:{role:'tablist','aria-label':t('nav.panel')}});
   for(const name of labels){const node=button(`panel.${name}`,()=>{tab=name;render();root.querySelector(`[data-tab="${name}"]`)?.focus();});node.dataset.tab=name;node.id=`tab-${name}`;node.setAttribute('role','tab');node.setAttribute('aria-selected',String(tab===name));node.setAttribute('aria-controls','panel-content');node.tabIndex=tab===name?0:-1;node.addEventListener('keydown',event=>{let i=labels.indexOf(name);if(event.key==='ArrowRight')i=(i+1)%labels.length;else if(event.key==='ArrowLeft')i=(i+labels.length-1)%labels.length;else if(event.key==='Home')i=0;else if(event.key==='End')i=labels.length-1;else return;event.preventDefault();tab=labels[i];render();root.querySelector(`[data-tab="${tab}"]`).focus();});nav.append(node);}root.append(nav);
   }

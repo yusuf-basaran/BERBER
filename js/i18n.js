@@ -239,6 +239,11 @@ const tr = {
 };
 
 Object.assign(tr,{
+  'approval.pending':'Başvurun inceleniyor. Bu sırada dükkan profilini, hizmetlerini ve çalışma saatlerini hazırlayabilirsin.',
+  'approval.rejected':'Başvurun onaylanmadı. Dükkan bilgilerini düzenleyebilirsin.',
+  'approval.suspended':'Dükkanın yayını askıya alındı. Randevu ve galeri yükleme işlemleri kapalı.',
+  'approval.inactive':'Dükkanın şu anda pasif. Müşteri işlemleri için Dükkan Profili bölümünden aktif hale getirebilirsin.',
+  'approval.unavailable':'Bu dükkanda şu an bu işlem yapılamıyor. Güncel durumu görmek için sayfayı yenileyin.',
   'nav.menuLabel':'Menü','nav.menuClose':'Menüyü kapat',
   'review.write':'Puan ve Yorum Ver','review.yours':'Paylaştığınız değerlendirme',
   'review.commentOptional':'Yorumunuz (isteğe bağlı)','review.commentCount':'{count}/1500 karakter',

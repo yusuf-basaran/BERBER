@@ -34,4 +34,3 @@ export async function galleryPanel(container,current,shop,onCover){
   for(const name of ['dragleave','drop'])drop.addEventListener(name,event=>{event.preventDefault();drop.classList.remove('gallery-drop--active');});
   drop.addEventListener('drop',event=>void upload([...event.dataTransfer.files]));await refresh();
 }
-
