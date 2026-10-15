@@ -240,6 +240,8 @@ export function protectPage(options = {}) {
   if (content) content.hidden = true;
   let disposed = false;
   let run = 0;
+  let resolveReady;
+  const ready = new Promise(resolve => { resolveReady = resolve; });
   async function refresh() {
     const token = ++run;
     if (content) content.hidden = true;
@@ -247,11 +249,16 @@ export function protectPage(options = {}) {
       const context = await requireAuth(options);
       if (!disposed && token === run && context) {
         if (content) content.hidden = false;
+        resolveReady(context);
         return context;
       }
+      if (!disposed && token === run) resolveReady(null);
       return null;
     } catch (error) {
-      if (!disposed && token === run) toast(errorMessage(error), { type: 'error', duration: 0 });
+      if (!disposed && token === run) {
+        toast(errorMessage(error), { type: 'error', duration: 0 });
+        resolveReady(null);
+      }
       return null;
     }
   }
@@ -261,6 +268,6 @@ export function protectPage(options = {}) {
   } });
   const visible = () => { if (document.visibilityState === 'visible' && !disposed) void refresh(); };
   document.addEventListener('visibilitychange', visible);
-  const ready = refresh();
-  return { ready, dispose() { disposed = true; run++; stopWatching(); document.removeEventListener('visibilitychange', visible); } };
+  void refresh();
+  return { ready, dispose() { disposed = true; run++; resolveReady(null); stopWatching(); document.removeEventListener('visibilitychange', visible); } };
 }
