@@ -85,8 +85,8 @@ begin
   if not found or hours.is_closed then return; end if;
   return query with candidates as (
     select instant as starts,instant+booking.duration_at_booking*interval '1 minute' as finishes
-    from generate_series(p_date::timestamp at time zone 'Europe/Nicosia',
-      (p_date+1)::timestamp at time zone 'Europe/Nicosia'-interval '1 second',interval '15 minutes') instant
+    from generate_series((p_date + hours.open_time) at time zone 'Europe/Nicosia',
+      (p_date + hours.close_time) at time zone 'Europe/Nicosia',booking.duration_at_booking * interval '1 minute') instant
   ) select c.starts,c.finishes from candidates c where c.starts>now()
     and (c.starts at time zone 'Europe/Nicosia')::time>=hours.open_time
     and (c.finishes at time zone 'Europe/Nicosia')::date=p_date
