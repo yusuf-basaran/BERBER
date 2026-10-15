@@ -354,7 +354,7 @@ button,input,select,textarea{font-family:var(--body)}
 .wordmark{font-weight:600}
 .notice--error{background:var(--yuzey);color:var(--hata)}
 h1,h2,h3,h4{font-family:var(--heading);font-weight:600;line-height:1.25}
-a:not(.button):not(.barber-card):not(.wordmark){color:var(--bakir);text-decoration:underline;text-underline-offset:.2em}
+a:not(.button):not(.barber-card):not(.wordmark):not(.barber-card-link){color:var(--bakir);text-decoration:underline;text-underline-offset:.2em}
 .button{background:var(--bakir);color:var(--zemin);border-color:var(--bakir);border-radius:var(--yaricap);min-height:44px;transition:color 150ms,background-color 150ms,opacity 150ms}
 .button:hover{background:var(--bakir-acik)}
 .button--secondary{background:transparent;color:var(--metin);border-color:var(--kenarlik)}
@@ -375,3 +375,11 @@ input:not([type=checkbox]):not([type=radio]),select,textarea{background:var(--yu
 .panel-tabs button,.text-button,a,button,summary{min-height:44px}
 .panel-tabs button{display:inline-flex;align-items:center;justify-content:center}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+.barber-card{position:relative}.barber-card-link{display:block;color:var(--metin);text-decoration:none}.barber-card-link:hover{color:var(--metin)}
+.favorite-button{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:var(--bosluk-2);font-size:26px;line-height:1;border:1px solid var(--kenarlik);border-radius:var(--yaricap);background:var(--yuzey);color:var(--bakir);cursor:pointer;transition:color 150ms,background-color 150ms,opacity 150ms}
+.favorite-button:hover{background:var(--yuzey-2)}.favorite-button[aria-pressed=true]{color:var(--bakir-acik)}.favorite-button:focus-visible{outline:2px solid var(--odak);outline-offset:2px}
+.barber-card>.favorite-button{position:absolute;right:var(--bosluk-3);top:var(--bosluk-3)}
+.calendar-actions{display:flex;flex-wrap:wrap;gap:var(--bosluk-3)}.calendar-actions .button{width:auto}
+.favorites-layout .state{grid-column:1/-1}.favorites-layout>.intro{margin-bottom:var(--bosluk-6)}
+@media(max-width:720px){.calendar-actions{width:100%}.calendar-actions .button{flex:1 1 160px}}

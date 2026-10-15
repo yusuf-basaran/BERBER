@@ -1,3 +1,4 @@
+import {calendarActions} from './calendar-actions.js';
 import { mountLayout } from './layout.js';
 import { protectPage,auth } from './auth.js';
 import { getAppointmentReviews,submitReview,reviewCard } from './reviews.js';
@@ -40,6 +41,8 @@ function card(appointment,review,reviewError) {
     }
   }
   if(shop)actions.append(element('a',{text:t('barber.detail'),className:'text-button',attrs:{href:pageUrl('barber',{id:shop.id})}}));
+  if(appointment.status==='confirmed')actions.append(calendarActions(appointment));
+  if(shop&&['completed','cancelled','rejected','no_show'].includes(appointment.status))actions.append(element('a',{text:t('favorite.rebook'),className:'button button--secondary',attrs:{href:pageUrl('barber',{id:shop.id,service:appointment.service_id})}}));
   if(appointment.status==='completed'){
     if(review)contents.push(reviewCard(review,{mine:true}));
     else if(reviewError){const warning=element('div',{className:'review-check-error'});showErrorState(warning,reviewError,()=>void load());contents.push(warning);}

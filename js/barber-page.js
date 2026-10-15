@@ -1,3 +1,4 @@
+import {createFavoriteControls} from './favorite-button.js';
 import { mountLayout } from './layout.js';
 import { getBarber,getPublicReviews } from './barbers.js';
 import { reviewCard } from './reviews.js';
@@ -9,6 +10,7 @@ import { t } from './i18n.js';
 import { element,shopPhoto,formatMoney,formatTime,formatDateTime,showState,showErrorState,errorMessage,showFormErrors,clearFormErrors,withFormTask,toast,safeHref } from './ui.js';
 mountLayout();
 const params=new URL(location.href).searchParams;const demo=params.get('demo')==='1';const id=params.get('id');
+const favorites=createFavoriteControls({demo});
 const container=document.querySelector('[data-detail]');const form=document.getElementById('booking-form');
 const slotBox=document.querySelector('[data-slots]');const summary=document.querySelector('[data-booking-summary]');
 const notice=document.querySelector('[data-booking-notice]');const panel=document.querySelector('[data-booking-panel]');
@@ -46,7 +48,7 @@ async function reviews(target=1) {
   }catch(error){if(reviewDisposed||current!==reviewRun)return false;const warning=target===1?reviewBox:reviewBox.querySelector('[data-review-error]')||element('div',{attrs:{'data-review-error':''}});if(target>1&&!warning.isConnected)reviewBox.append(warning);showErrorState(warning,error,()=>void reviews(target));return false;}finally{if(!reviewDisposed&&current===reviewRun)more.disabled=false;}
 }
 function detail(value) {
-  const contacts=element('div',{className:'contact-actions'});
+  const contacts=element('div',{className:'contact-actions'});if(!demo)contacts.append(favorites.button(value));
   if(!demo&&safeHref(`tel:${value.phone}`))contacts.append(element('a',{text:t('barber.call'),className:'button button--secondary',attrs:{href:`tel:${value.phone}`}}));
   if(!demo&&/^\+905\d{9}$/.test(value.whatsapp||''))contacts.append(element('a',{text:t('barber.whatsapp'),className:'button button--secondary',attrs:{href:`https://wa.me/${value.whatsapp.slice(1)}`,target:'_blank'}}));
   if(!demo&&value.map_url&&safeHref(value.map_url))contacts.append(element('a',{text:t('barber.directions'),className:'button button--secondary',attrs:{href:value.map_url,target:'_blank'}}));
@@ -83,7 +85,7 @@ form.addEventListener('submit',event=>{
 async function initialize() {
   panel.hidden=true;document.querySelector('[data-detail-columns]').hidden=true;showState(container,{kind:'loading',key:'common.loading'});
   try{barber=await getBarber(id,{demo});if(!barber){container.replaceChildren(element('h1',{text:t('barber.notFound')}),element('a',{text:t('nav.home'),className:'text-button',attrs:{href:pageUrl('home')}}));return;}
-    detail(barber);document.querySelector('[data-detail-columns]').hidden=false;const dates=bookingDates();form.elements.date.min=dates.min;form.elements.date.max=dates.max;form.elements.date.value=dates.min;
+    detail(barber);void favorites.sync();document.querySelector('[data-detail-columns]').hidden=false;const dates=bookingDates();form.elements.date.min=dates.min;form.elements.date.max=dates.max;form.elements.date.value=dates.min;
     const date=params.get('date');try{calendarDate(date);if(date>=dates.min&&date<=dates.max)form.elements.date.value=date;}catch{}
     const serviceId=params.get('service');if(barber.services.some(service=>service.id===serviceId))form.elements.serviceId.value=serviceId;
     panel.hidden=false;
@@ -93,4 +95,4 @@ async function initialize() {
     await reviews();
   }catch(error){showErrorState(container,error,()=>void initialize());}
 }
-void initialize();window.addEventListener('pagehide',()=>{load++;reviewDisposed=true;reviewRun++;controller?.abort();},{once:true});
+void initialize();window.addEventListener('pagehide',()=>{favorites.dispose();load++;reviewDisposed=true;reviewRun++;controller?.abort();},{once:true});

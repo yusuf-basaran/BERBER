@@ -1,9 +1,12 @@
+import {barberCard} from './barber-card.js';
+import {createFavoriteControls} from './favorite-button.js';
 import { mountLayout } from './layout.js';
 import { categories,getLocations,searchBarbers } from './barbers.js';
 import { pageUrl } from './config.js';
 import { t } from './i18n.js';
 import { element,shopPhoto,formatMoney,showState,showErrorState } from './ui.js';
 mountLayout();
+
 const demo=new URL(location.href).searchParams.get('demo')==='1';
 const form=document.getElementById('search-form');const grid=document.querySelector('[data-barbers]');
 if(window.matchMedia('(max-width:720px)').matches)document.querySelector('.filter-details').open=false;
@@ -17,17 +20,8 @@ function options(select,items,value='') {
 options(form.elements.category,categories.map(([value,key])=>({value,text:t(key)})));
 function districts(value='') {const city=form.elements.city.value;options(form.elements.district,[...new Set(locations.filter(row=>!city||row.city===city).map(row=>row.district))],value);}
 form.elements.city.addEventListener('change',()=>districts());
-function card(barber) {
-  const heading=element('h2',{text:barber.shop_name});
-  const rating=Number(barber.avg_rating).toLocaleString('tr-TR',{minimumFractionDigits:1,maximumFractionDigits:1});
-  return element('a',{className:'barber-card',attrs:{href:pageUrl('barber',{id:barber.id,...(demo?{demo:'1'}:{})})}},[
-    shopPhoto(barber),element('div',{className:'barber-card-body'},[heading,
-      element('p',{text:t('barber.location',{city:barber.city,district:barber.district}),className:'card-location'}),
-      element('p',{text:Number(barber.review_count)>0?`${t('barber.ratingLabel',{rating})} · ${t('barber.reviewsCount',{count:barber.review_count})}`:t('barber.noReviews'),className:'card-rating'}),
-      element('div',{className:'card-bottom'},[element('strong',{text:t('barber.fromPrice',{price:formatMoney(barber.starting_price,barber.currency)})}),element('span',{text:'→',attrs:{'aria-hidden':'true'}})])
-    ])
-  ]);
-}
+const favorites=createFavoriteControls({demo});
+const card=barber=>barberCard(barber,{demo,favorites});
 function pagination(total) {
   pager.replaceChildren();if(total<=12&&page===1)return;
   const previous=element('button',{text:t('common.previous'),className:'button button--secondary',attrs:{type:'button',disabled:page<=1}});
@@ -41,7 +35,7 @@ async function search() {
   try {
     const values={...Object.fromEntries(new FormData(form)),page};const result=await searchBarbers(values,{demo,signal:controller.signal});
     if(current!==sequence)return;grid.setAttribute('aria-busy','false');count.textContent=t('search.results',{count:result.total});
-    if(!result.rows.length)showState(grid,{key:'search.empty'});else grid.replaceChildren(...result.rows.map(card));pagination(result.total);
+    if(!result.rows.length)showState(grid,{key:'search.empty'});else grid.replaceChildren(...result.rows.map(card));pagination(result.total);void favorites.sync();
   }catch(error){if(current===sequence&&!controller.signal.aborted)showErrorState(grid,error,()=>void search());}
 }
 form.addEventListener('submit',event=>{event.preventDefault();page=1;void search();});
@@ -51,4 +45,4 @@ async function initialize() {
   try{locations=await getLocations({demo});options(form.elements.city,[...new Set(locations.map(row=>row.city))]);districts();await search();}
   catch(error){showErrorState(grid,error,()=>void initialize());}
 }
-void initialize();window.addEventListener('pagehide',()=>{sequence++;controller?.abort();},{once:true});
+void initialize();window.addEventListener('pagehide',()=>{sequence++;controller?.abort();favorites.dispose();},{once:true});

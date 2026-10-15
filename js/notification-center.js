@@ -1,3 +1,5 @@
+import {calendarActions} from './calendar-actions.js';
+import {getCalendarAppointment} from './appointments.js';
 import { getNotifications,getUnreadCount,markRead,markAllRead,subscribeNotifications } from './notifications.js';
 import { pageUrl } from './config.js';
 import { isUuid } from './slots.js';
@@ -17,6 +19,7 @@ export function createNotificationCenter(container){
     for(const row of data.rows){const card=el('article',{className:`notification-card${row.is_read?'':' notification-card--unread'}`,attrs:{'data-notification-id':row.id}},[el('h3',{text:row.title}),el('p',{text:row.body}),el('time',{text:formatDateTime(row.created_at),attrs:{datetime:row.created_at}})]);const actions=el('div',{className:'notification-actions'});
       if(!row.is_read)actions.append(control('notification.markRead',node=>write(node,()=>markRead(row.id))));else actions.append(el('span',{text:t('notification.read'),className:'intro'}));
       if(row.type==='security_recovery'||isUuid(row.appointment_id))actions.append(el('a',{text:t('notification.details'),className:'text-button',attrs:{href:row.type==='security_recovery'?pageUrl('security'):pageUrl(context.profile.role==='barber'?'panel':'appointments')}}));card.append(actions);list.append(card);
+      if(context.profile.role==='customer'&&row.type==='appointment_confirmed'&&isUuid(row.appointment_id))void getCalendarAppointment(row.appointment_id).then(appointment=>{if(!disposed&&token===epoch&&run===listRun&&modal&&actions.isConnected)actions.append(calendarActions(appointment));}).catch(()=>{});
     }
     if(data.total>20||page>1){const previous=control('common.previous',()=>{page--;void load();}),next=control('common.next',()=>{page++;void load();});previous.disabled=page<=1;next.disabled=page*20>=data.total;pager.append(previous,el('span',{text:t('common.page',{page})}),next);}
   }catch(error){if(!disposed&&token===epoch&&run===listRun&&modal)showErrorState(list,error,()=>{void refreshCount();void load();});}}

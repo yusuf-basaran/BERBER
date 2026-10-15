@@ -229,7 +229,7 @@ export function renderNavigation(container, context = null) {
   const links = [['home', 'nav.home']];
   if (context?.status === 'ready') {
     links.push(context.profile.role === 'barber' ? ['panel','nav.panel'] : ['appointments','nav.appointments']);
-    links.push(['security','nav.security']);
+    links.push(['favorites','nav.favorites'], ['security','nav.security']);
   } else if (context?.status === 'mfa_required') {
     links.push(['login','auth.verifyTitle']);
   } else {
