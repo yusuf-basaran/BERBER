@@ -1,0 +1,56 @@
+@media(max-width:700px){.panel-layout{padding:0 1rem;margin:2rem auto}.panel-form,.panel-list{grid-template-columns:1fr}.panel-form{padding:1rem}.panel-content .hours-row{grid-template-columns:repeat(2,minmax(0,1fr))}.panel-content .hours-row>.checkbox-field{grid-column:1/-1}.panel-stats{gap:.5rem}.stat-card{padding:.8rem}.stat-card span{font-size:.8rem}.stat-card strong{font-size:2rem}}
+@media(max-width:420px){.notification-modal{padding:22px 16px}.notification-toolbar{grid-template-columns:1fr}.notification-bell>span:not(.notification-count){position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}}
+@media(max-width:400px){.review-star-choice{margin-right:4px}.review-star-choice>span:not(.sr-only){width:38px;height:42px;font-size:25px}.review-stars{display:block;margin:8px 0}}
+@media(forced-colors:active){.slot-choice:has(input:checked) span,.role-choice:has(input:checked),.review-star-choice.is-selected>span:not(.sr-only),.panel-tabs [aria-selected=true]{outline:2px solid Highlight}.review-star-choice.is-selected>span:not(.sr-only){color:Highlight}.notification-card--unread{border-left-color:Highlight}}
+@media(max-width:980px){.account-layout{gap:40px;margin-top:44px}.account-story h2{font-size:58px}.account-story{padding-top:60px}.account-card{padding:28px}.site-footer{margin-left:40px;margin-right:40px}}
+@media(max-width:720px){.site-header{padding:22px 24px}.account-layout{display:block;max-width:540px;padding:0 24px;margin:34px auto 44px}.account-story{position:static;padding:0 0 24px}.account-story .eyebrow{margin-bottom:12px}.account-story h2{font-size:45px;max-width:none;margin-bottom:14px}.story-text{font-size:13px;max-width:none;margin-bottom:0}.story-detail,.story-lines{display:none}.account-card{padding:26px}h1{font-size:36px}.header-links{gap:15px}.header-links a{font-size:11px}.wordmark{font-size:25px}.wordmark:before{width:15px;margin-right:8px}.site-footer{margin:0 24px;padding:24px 0;flex-direction:column;align-items:flex-start;gap:14px}.legal-layout{padding:0 24px;margin:38px auto 48px}.legal-card h1{font-size:42px}.legal-intro{font-size:15px}.legal-card section p{font-size:13px}}
+@media(max-width:400px){.site-header{padding:20px 18px;gap:12px}.header-links{gap:12px}.account-layout{padding:0 18px}.account-card{padding:22px 18px}.account-story h2{font-size:41px}.role-options{gap:8px}.role-choice{gap:6px;padding:12px 8px}.role-choice small{font-size:9px}.site-footer{margin:0 18px}.footer-links{gap:16px}.legal-layout{padding:0 18px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+@media(max-width:980px){.barber-grid{grid-template-columns:repeat(2,1fr)}.detail-hero{gap:28px}.detail-columns{gap:28px}.detail-info h1{font-size:44px}.booking-panel{padding:22px}.service-row{flex-wrap:wrap;gap:10px}.service-row>button{padding:4px 0}.filter-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.browse-layout,.detail-layout,.appointments-layout{padding:0 24px;margin:34px auto 48px}.browse-hero h1{font-size:46px}.browse-hero .intro{font-size:13px}.search-form{padding:20px}.search-main{grid-template-columns:1fr}.filter-footer{align-items:start;flex-direction:column;gap:8px}.barber-grid{gap:18px}.barber-card h2{font-size:26px}.barber-card-body{padding:18px}.card-bottom{font-size:11px}.detail-hero,.detail-columns{grid-template-columns:1fr;gap:20px}.detail-hero{margin-top:24px}.shop-photo--large{height:230px}.detail-info h1{font-size:44px}.booking-panel{position:static;order:-1;margin:10px 0}.detail-columns h2{font-size:31px}.appointments-toolbar{gap:14px;align-items:stretch;flex-direction:column}.appointments-toolbar .button{width:100%}.appointment-card{padding:22px}.appointment-heading{align-items:start;flex-direction:column;gap:12px}.appointment-actions .button{flex:1}.appointment-actions .text-button{margin-left:0}.results-heading{align-items:start}.pager{gap:12px}.pager .button{min-width:80px}.demo-banner{font-size:11px}.site-header>[data-nav]{min-width:0}}
+@media(max-width:500px){.barber-grid{grid-template-columns:1fr}.shop-photo{height:210px}.filter-grid{grid-template-columns:1fr 1fr;gap:0 12px}.filter-grid .field label{font-size:11px}.browse-hero h1{font-size:43px}.browse-layout,.detail-layout,.appointments-layout{padding:0 18px}.search-form{padding:18px}.slots-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:720px){.security-layout{margin:34px auto 48px;padding:0 24px}.security-grid{grid-template-columns:1fr;gap:0}.security-card{padding:22px}.security-layout h1{font-size:40px}.recovery-grid{grid-template-columns:1fr}.site-nav{justify-content:flex-end;gap:10px}.site-nav a,.site-nav button{font-size:10px}.recovery-actions{flex-direction:column}.recovery-actions .button{width:100%}}
+
+
+@media(max-width:980px){
+  .nav-toggle{display:inline-flex;align-items:center;justify-content:center}
+  .site-header .site-nav{display:none;position:absolute;top:calc(100% - 1px);left:18px;right:18px;background:var(--surface);border:1px solid var(--control-border);border-radius:10px;padding:12px;z-index:25;box-shadow:0 16px 40px #0008;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .site-header .site-nav.is-open{display:grid}
+  .nav-tools .notification-bell>span:not(.notification-count){position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  .site-nav a,.site-nav button{justify-content:flex-start;font-size:14px;min-height:44px}
+}
+@media(max-width:720px){
+  .site-header{padding:16px 24px;gap:12px;min-height:80px}
+  .header-links a{font-size:13px}
+  .intro,.notice,.appointment-note,.appointment-facts,.review-card,.browse-hero .intro,.detail-info>p:not(.eyebrow){font-size:14px}
+  .story-text{font-size:15px}.story-detail{font-size:13px}
+  .field label,.filter-grid .field label{font-size:14px}.field-hint,.field-error{font-size:13px}
+  .role-choice small{font-size:12px}.role-choice strong{font-size:14px}
+  .filter-details summary,.resend summary,.resend .button,.account-link{font-size:13px}
+  .legal-card section p{font-size:15px}.legal-intro{font-size:16px}
+  .barber-card h2{font-size:29px}.card-location,.card-rating,.card-bottom,.results-heading p{font-size:13px}
+  .contact-actions .button,.appointment-actions .button{font-size:13px}
+  .panel-layout{padding:0 24px}.panel-form{padding:18px}.panel-content .hours-row{gap:12px}
+  .stat-card span{font-size:13px}.stat-card strong{font-size:30px}
+  .modal{padding:26px 22px;max-width:calc(100vw - 24px)}
+  .notification-modal{padding:26px 18px}.notification-toolbar{grid-template-columns:1fr}
+  .review-star-choice{margin-right:4px}.review-star-choice>span:not(.sr-only){width:44px;height:44px;font-size:27px}
+  .pager{flex-wrap:wrap}.toast-region{right:12px;bottom:12px;max-width:calc(100vw - 24px)}
+}
+@media(max-width:500px){
+  .filter-grid{grid-template-columns:1fr}.filter-grid .field{margin-bottom:16px}
+  .search-form{padding:20px}.search-main{gap:12px}.filter-details summary{min-height:44px}
+  .browse-hero h1,.detail-info h1{font-size:42px}.results-heading{flex-wrap:wrap;gap:6px}
+  .review-stars{display:block;margin:8px 0}.panel-content .hours-row input{padding:10px 6px}
+}
+@media(max-width:400px){
+  .site-header{padding:16px 18px}.site-header>[data-nav],.site-header>[data-security-nav]{gap:0}
+  .nav-tools{gap:4px}.nav-tools .notification-bell{padding:6px}.nav-toggle{padding:8px 10px}
+  .wordmark{font-size:24px;letter-spacing:.1em}.header-links{gap:8px}
+  .panel-layout,.security-layout{padding:0 18px}.account-card{padding:24px 18px}
+  .role-options{grid-template-columns:1fr}.role-choice{padding:14px 12px}
+  .panel-stats{gap:8px}.stat-card{padding:10px 8px}.stat-card span{font-size:12px}
+  .appointment-card{padding:22px 18px}.modal{padding:24px 18px}.notification-modal{padding:26px 18px}
+}
+@media(max-height:600px){.modal{margin:16px auto}.account-story{position:static}.booking-panel{position:static}}
+

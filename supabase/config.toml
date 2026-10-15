@@ -1,0 +1,4 @@
+project_id = "berber"
+
+[functions.recovery-login]
+verify_jwt = true
