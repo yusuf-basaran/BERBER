@@ -94,6 +94,7 @@ export function errorMessage(error, fallback = 'error.generic') {
   if(error?.code==='P2001')return t('manual.cancelClosed');
   if(error?.code==='P2002')return t('manual.unavailable');
   if(error?.code==='P2004')return t('approval.unavailable');
+  if(error?.code==='P2005')return t('admin.changed');
   if (error?.userMessage) return error.userMessage;
   if (error?.status === 429) return t('error.rateLimit');
   if (errorKeys[error?.code]) return t(errorKeys[error.code]);

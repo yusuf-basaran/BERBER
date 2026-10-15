@@ -1,5 +1,7 @@
 # BERBER
 
+Yönetim paneli, kararlar ve ilk yönetici kurulumu için [V2A üçüncü aşama raporuna](V2A-ASAMA-3.md) bakın. Yeni migration: `supabase/v2a_02_admin_paneli.sql`. Yönetici hesabında TOTP zorunludur.
+
 Berber onayı altyapısı için [V2A ikinci aşama raporuna](V2A-ASAMA-2.md) bakın. Yeni migration: `supabase/v2a_01_berber_onayi.sql`. Admin karar ekranı sonraki aşamadadır.
 
 Galeri için [V2 dördüncü aşama notlarına](V2-ASAMA-4.md) bakın. Yeni migration: `supabase/v2_03_galeri.sql`. Sonraki çalışma paketi: [berber onayı ve müşteri kartı planı](V2A-PLAN.md).

@@ -239,6 +239,18 @@ const tr = {
 };
 
 Object.assign(tr,{
+  'admin.kicker':'Dükkan başvuruları', 'admin.title':'Yönetim', 'admin.notFound':'Sayfa bulunamadı',
+  'admin.filter':'Başvuru durumu', 'admin.search':'Dükkan, başvuran veya e-posta ara', 'common.search':'Ara',
+  'admin.pendingCount':'İnceleme bekleyen {count} başvuru', 'admin.empty':'Bu filtrede başvuru yok.', 'admin.inspect':'Başvuruyu incele',
+  'admin.state.pending':'Bekleyen', 'admin.state.approved':'Onaylı', 'admin.state.rejected':'Reddedilen', 'admin.state.suspended':'Askıda',
+  'admin.call':'Dükkanı ara', 'admin.instagram':'Instagram profili', 'admin.applied':'Başvuru {count} · {date}',
+  'admin.checklist':'Doğrulama kontrol listesi', 'admin.note':'Özel yönetici notu', 'admin.reason':'Berbere gösterilecek karar gerekçesi',
+  'admin.check.phone_called':'Dükkan telefonuyla arandı', 'admin.check.map_checked':'Konum haritada doğrulandı',
+  'admin.check.listing_checked':'Instagram/Google kaydı kontrol edildi', 'admin.check.document_checked':'Belge incelendi',
+  'admin.saveFirst':'Kontrol listesi veya yönetici notunu değiştirdiysen önce Kaydet düğmesine bas.',
+  'admin.reasonRequired':'Ret veya askıya alma gerekçesini yaz.', 'admin.action.approve':'Onayla', 'admin.action.reject':'Reddet',
+  'admin.action.suspend':'Askıya al', 'admin.action.reapprove':'Tekrar onayla',
+  'admin.confirm':'{shop} için {action} işlemi uygulansın mı?', 'admin.changed':'Başvuru başka bir işlemle değişti. Güncel başvuruyu açmak için Yenile düğmesine bas.',
   'approval.pending':'Başvurun inceleniyor. Bu sırada dükkan profilini, hizmetlerini ve çalışma saatlerini hazırlayabilirsin.',
   'approval.rejected':'Başvurun onaylanmadı. Dükkan bilgilerini düzenleyebilirsin.',
   'approval.suspended':'Dükkanın yayını askıya alındı. Randevu ve galeri yükleme işlemleri kapalı.',

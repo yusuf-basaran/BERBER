@@ -402,3 +402,13 @@ input:not([type=checkbox]):not([type=radio]),select,textarea{background:var(--yu
 .gallery-view-actions{justify-content:center}.gallery-view-actions .button{min-width:100px;width:auto;flex:1 1 100px;max-width:200px}
 @media(min-width:768px){.gallery-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.gallery-manager{grid-template-columns:repeat(3,minmax(0,1fr))}.gallery-viewer{padding:var(--bosluk-5)}}
 @media(max-width:520px){.gallery-manager{grid-template-columns:minmax(0,1fr)}.gallery-drop{padding:var(--bosluk-4)}}
+.admin-toolbar{display:flex;flex-wrap:wrap;gap:var(--bosluk-4);align-items:end;margin-block:var(--bosluk-5)}
+.admin-toolbar .field{flex:1 1 220px}.admin-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:var(--bosluk-4)}
+.admin-card{min-width:0}.admin-card h2,.admin-card p,.admin-detail p{overflow-wrap:anywhere}.admin-list .state{grid-column:1/-1}
+.admin-detail{border:1px solid var(--kenarlik);border-radius:var(--yaricap-buyuk);background:var(--yuzey);padding:var(--bosluk-5);margin-top:var(--bosluk-6)}
+.admin-detail-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--bosluk-5);margin-block:var(--bosluk-5)}
+.admin-detail .shop-photo{max-width:100%}.admin-detail fieldset{display:grid;gap:var(--bosluk-4);margin-bottom:var(--bosluk-5);padding:var(--bosluk-4);border:1px solid var(--kenarlik);border-radius:var(--yaricap)}
+.admin-detail .checkbox-field{display:flex;align-items:center;gap:var(--bosluk-3);min-height:44px}.admin-detail .checkbox-field input{flex:0 0 auto}
+.admin-detail textarea{width:100%}.admin-detail .panel-form{max-width:100%;display:block}.admin-detail .panel-form>button{margin-top:var(--bosluk-4)}
+@media(min-width:768px){.admin-detail-grid{grid-template-columns:minmax(0,1fr) minmax(0,2fr)}}
+@media(max-width:520px){.admin-detail{padding:var(--bosluk-4)}.admin-toolbar>.button{flex:1 1 120px}}

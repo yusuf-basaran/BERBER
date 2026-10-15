@@ -13,7 +13,7 @@ export const config = Object.freeze({
 const pages = Object.freeze({
   home: 'index.html', barber: 'berber.html', login: 'giris.html', register: 'kayit.html',
   favorites: 'favoriler.html', appointments: 'randevularim.html', panel: 'panel.html', security: 'guvenlik.html',
-  terms: 'kosullar.html', privacy: 'kisisel-veri.html'
+  terms: 'kosullar.html', privacy: 'kisisel-veri.html', admin:'admin.html'
 });
 
 export function pageUrl(page, params = {}) {
@@ -34,7 +34,7 @@ export function safeReturnUrl(value, fallback = 'home') {
     if (url.origin !== base.origin || !url.pathname.startsWith(base.pathname)) return defaultUrl;
     const path = url.pathname.slice(base.pathname.length);
     const allowed = ['index.html', 'berber.html', 'randevularim.html', 'panel.html', 'guvenlik.html', 'favoriler.html', 'favoriler', '', 'berber', 'randevularim', 'panel', 'guvenlik'];
-    if (!allowed.includes(path)) return defaultUrl;
+    if (!allowed.includes(path)&&!['admin','admin.html'].includes(path)) return defaultUrl;
     url.hash = '';
     for (const key of ['access_token', 'refresh_token', 'code', 'error', 'error_description']) url.searchParams.delete(key);
     return url.href;

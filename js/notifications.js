@@ -2,7 +2,7 @@ import { supabase } from './supabase.js';
 import { auth } from './auth.js';
 import { isUuid } from './slots.js';
 import { t } from './i18n.js';
-const fields='id,type,title,body,appointment_id,is_read,created_at';
+const fields='id,type,title,body,appointment_id,barber_id,is_read,created_at';
 let subscriptionSequence=0;
 const fail=key=>{const error=new Error(t(key));error.userMessage=t(key);return error;};
 async function ready(){const context=await auth.getContext();if(context.status!=='ready')throw fail(context.status==='mfa_required'?'error.mfaRequired':'auth.loginRequired');return context;}
