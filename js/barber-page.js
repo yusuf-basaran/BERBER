@@ -1,4 +1,5 @@
 import {createFavoriteControls} from './favorite-button.js';
+import {mountGallery} from './gallery-view.js';
 import { mountLayout } from './layout.js';
 import { getBarber,getPublicReviews } from './barbers.js';
 import { reviewCard } from './reviews.js';
@@ -11,6 +12,7 @@ import { element,shopPhoto,formatMoney,formatTime,formatDateTime,showState,showE
 mountLayout();
 const params=new URL(location.href).searchParams;const demo=params.get('demo')==='1';const id=params.get('id');
 const favorites=createFavoriteControls({demo});
+let disposeGallery=()=>{};
 const container=document.querySelector('[data-detail]');const form=document.getElementById('booking-form');
 const slotBox=document.querySelector('[data-slots]');const summary=document.querySelector('[data-booking-summary]');
 const notice=document.querySelector('[data-booking-notice]');const panel=document.querySelector('[data-booking-panel]');
@@ -56,6 +58,7 @@ function detail(value) {
     element('p',{text:t('barber.location',{city:value.city,district:value.district}),className:'eyebrow'}),element('h1',{text:value.shop_name}),
     element('p',{text:value.review_count?`${t('barber.ratingLabel',{rating:Number(value.avg_rating).toLocaleString('tr-TR')})} · ${t('barber.reviewsCount',{count:value.review_count})}`:t('barber.noReviews')}),element('p',{text:value.address,className:'intro'}),contacts
   ])]),element('section',{className:'detail-section'},[element('h2',{text:t('barber.about')}),element('p',{text:value.bio}),element('p',{text:t(Number(value.cancel_hours_before??2)===0?'manual.cancelUnlimited':'manual.cancelPolicy',{hours:value.cancel_hours_before??2}),className:'notice'})]));
+  disposeGallery();const gallery=element('section',{className:'detail-section gallery-section'});container.append(gallery);disposeGallery=mountGallery(gallery,value,{demo});
   const services=document.querySelector('[data-services]');services.replaceChildren(...value.services.map(item=>{
     const button=element('button',{text:t('barber.chooseService'),className:'text-button',attrs:{type:'button',disabled:demo||!value.is_active}});
     button.addEventListener('click',()=>{form.elements.serviceId.value=item.id;panel.scrollIntoView({block:'start'});void slots();});
@@ -95,4 +98,4 @@ async function initialize() {
     await reviews();
   }catch(error){showErrorState(container,error,()=>void initialize());}
 }
-void initialize();window.addEventListener('pagehide',()=>{favorites.dispose();load++;reviewDisposed=true;reviewRun++;controller?.abort();},{once:true});
+void initialize();window.addEventListener('pagehide',()=>{disposeGallery();favorites.dispose();load++;reviewDisposed=true;reviewRun++;controller?.abort();},{once:true});

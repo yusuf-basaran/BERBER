@@ -275,6 +275,28 @@ Object.assign(tr,{
   'error.closedDate':'Bugün veya gelecekteki bir tarih seçin. Açıklama en fazla 300 karakter olabilir.',
   'legal.privacy3':'Dükkan profili, dükkan telefonu, hizmetler, fiyatlar ve yorumlar ziyaretçilere açıktır. Randevu bilgileri yalnızca ilgili müşteri ve dükkan sahibine görünür. Dükkan sahibi kendi randevularındaki müşterinin adını ve telefonunu iletişim amacıyla görebilir. E-posta adresi paylaşılmaz. Hesap profillerine doğrudan erişim yalnızca hesabın sahibine açıktır. Bildirimler yalnızca kendi hesabınızda görünür.'
 });
+Object.assign(tr,{
+  'panel.gallery':'Galeri',
+  'gallery.choose':'Fotoğraf seç veya buraya sürükle',
+  'gallery.hint':'JPEG, PNG veya WebP; dosya başına en fazla 5 MB. Uzun kenar 1600 piksele küçültülür ve sıkıştırılır. En fazla 12 fotoğraf.',
+  'gallery.count':'{count} / 12 fotoğraf',
+  'gallery.empty':'Henüz galeri fotoğrafı yok.',
+  'gallery.caption':'Fotoğraf açıklaması',
+  'gallery.alt':'{shop} · galeri fotoğrafı {count}',
+  'gallery.open':'Fotoğrafı büyüt: {caption}',
+  'gallery.position':'{count} / {total}',
+  'gallery.next':'Sonraki',
+  'gallery.up':'Öne al',
+  'gallery.down':'Arkaya al',
+  'gallery.cover':'Kapak fotoğrafı',
+  'gallery.setCover':'Kapak yap',
+  'gallery.incomplete':'İşlem tamamlanmadı. Bu kaydı temizleyip yeniden fotoğraf yükleyebilirsiniz.',
+  'gallery.cleanup':'Yarım kalan kaydı temizle',
+  'gallery.uploadCleanup':'Yükleme tamamlanamadı. Galerideki yarım kalan kaydı temizleyip yeniden deneyin.',
+  'gallery.deleteConfirm':'Bu fotoğraf galeri ve dosya alanından silinsin mi? Kapak olarak seçiliyse kapak da kaldırılır.',
+  'gallery.limit':'Bir dükkanda en fazla 12 fotoğraf olabilir. Önce mevcut veya yarım kalan bir kaydı silin.',
+  'gallery.uploading':'Fotoğraf yükleniyor: {count} / {total}'
+});
 export const dictionaries = Object.freeze({
   tr: Object.freeze(tr),
   en: Object.freeze(Object.fromEntries(Object.keys(tr).map(key => [key, ''])))

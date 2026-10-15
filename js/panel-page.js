@@ -2,6 +2,7 @@ import { mountLayout } from './layout.js';
 import { protectPage } from './auth.js';
 import * as api from './panel.js';
 import {manualForm,blockedList} from './panel-manual.js';
+import {galleryPanel} from './panel-gallery.js';
 import {setBlocked} from './manual.js';
 import { getLocations,categories,getPublicReviews } from './barbers.js';
 import { reviewCard } from './reviews.js';
@@ -11,7 +12,7 @@ import { t } from './i18n.js';
 import { element as el,formatDateTime,formatTime,formatMoney,localDate,toast,errorMessage,showErrorState,showState,withFormTask,showFormErrors,clearFormErrors,openModal,confirmAction,shopPhoto } from './ui.js';
 mountLayout();const protection=protectPage({role:'barber'});const root=document.querySelector('[data-panel]');
 let shop,context,locations=[],tab='requests',disposed=false,epoch=0,writing=false;
-const labels=['requests','manual','profile','services','hours','closed','reviews','blocked'];
+const labels=['requests','manual','profile','gallery','services','hours','closed','reviews','blocked'];
 const button=(key,run,primary=false)=>{const node=el('button',{text:t(key),className:`button${primary?'':' button--secondary'}`,attrs:{type:'button'}});node.addEventListener('click',()=>void run(node));return node;};
 const option=(value,text)=>el('option',{text,attrs:{value}});
 let fieldId=0;
@@ -30,7 +31,7 @@ function render(){epoch++;root.replaceChildren();if(!shop){tab='profile';root.ap
   for(const name of labels){const node=button(`panel.${name}`,()=>{tab=name;render();root.querySelector(`[data-tab="${name}"]`)?.focus();});node.dataset.tab=name;node.id=`tab-${name}`;node.setAttribute('role','tab');node.setAttribute('aria-selected',String(tab===name));node.setAttribute('aria-controls','panel-content');node.tabIndex=tab===name?0:-1;node.addEventListener('keydown',event=>{let i=labels.indexOf(name);if(event.key==='ArrowRight')i=(i+1)%labels.length;else if(event.key==='ArrowLeft')i=(i+labels.length-1)%labels.length;else if(event.key==='Home')i=0;else if(event.key==='End')i=labels.length-1;else return;event.preventDefault();tab=labels[i];render();root.querySelector(`[data-tab="${tab}"]`).focus();});nav.append(node);}root.append(nav);
   }
   const content=el('section',{className:'panel-content',attrs:{id:'panel-content',...(shop?{role:'tabpanel','aria-labelledby':`tab-${tab}`}:{})}});root.append(content);
-  const seq=epoch;const renderers={profile:profile,services,hours,closed,reviews,requests,manual:(content,current)=>manualForm(content,current,shop,()=>{tab='requests';render();}),blocked:(content,current)=>blockedList(content,current,shop)};void renderers[tab](content,()=>!disposed&&epoch===seq).catch(error=>{if(!disposed&&epoch===seq)showErrorState(content,error,()=>render());});
+  const seq=epoch;const renderers={profile:profile,services,hours,closed,reviews,requests,gallery:(content,current)=>galleryPanel(content,current,shop,url=>{shop.photo_url=url;}),manual:(content,current)=>manualForm(content,current,shop,()=>{tab='requests';render();}),blocked:(content,current)=>blockedList(content,current,shop)};void renderers[tab](content,()=>!disposed&&epoch===seq).catch(error=>{if(!disposed&&epoch===seq)showErrorState(content,error,()=>render());});
 }
 async function profile(container){const form=el('form',{className:'panel-form'});const current=shop||{};
   field(form,'shopName','panel.shopName',{value:current.shop_name,maxlength:120,required:true});
