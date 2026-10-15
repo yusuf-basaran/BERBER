@@ -18,6 +18,8 @@ Mevcut V1 projesinde yalnızca `supabase/v2_01_randevu_yonetimi.sql` uygulanır.
 
 Panelde Randevu Ekle ve Engellenen Müşteriler sekmeleri; randevu kartlarında kaynak, gelmeme sayısı ve engelleme işlemleri bulunur. İptal süresi dükkan profilinden değiştirilir. Müşteri ekranında süre dolunca telefon/WhatsApp iletişimi gösterilir. Gizlilik metni toplam sayının paylaşımını açıklar; veri anonimleştirilmiş gibi tanımlanmaz.
 
+Gönderilen BERBER logosu 10 sayfanın ortak başlığına eklenmiştir. Ana görsel `assets/berber-logo.png`, soldaki makaslı B simgesi `assets/berber-icon.png` dosyasıdır. Sekme ve ana ekrana ekleme ikonu bu simgeyi kullanır. Logo alternatif metni, ana sayfa bağlantısının erişilebilir adı ve mobil menü alanı korunur.
+
 Ortak CSS tüm mevcut sayfalarda sıcak koyu renkleri, Fraunces/DM Sans ailelerini, 1.25 başlık ölçeğini, metinli durum rozetlerini, görünür odak halkasını ve azaltılmış hareket tercihini uygular. Renk değerleri `css/style.css` başındaki değişkenlerde tutulur. V1 bileşenleri aynı değişkenlere bağlanan adlarla uyumlu kalır. Açık yüzey değişkenleri ilerideki QR/yazdırma/e-posta aşaması için tanımlıdır; bu özellikler henüz eklenmemiştir.
 
 ## V1'den etkilenen yerler

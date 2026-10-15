@@ -61,3 +61,9 @@ h3,.service-row h3,.notification-card h3,.booking-summary h3{font-family:var(--h
 h4{font-size:1.25rem}
 .role-choice,.slot-choice span,.slot-option,.review-star-choice>span:not(.sr-only){min-height:44px;min-width:44px}
 @media(max-width:720px){.intro,.notice,.appointment-note,.appointment-facts,.review-card,.browse-hero .intro,.detail-info>p:not(.eyebrow){font-size:1rem}}
+
+.wordmark{display:inline-flex;align-items:center;flex:0 1 250px;max-width:250px;min-width:0;line-height:1;letter-spacing:normal}
+.wordmark::before{display:none;content:none}
+.brand-logo{display:block;width:100%;height:auto;max-height:84px;object-fit:contain}
+@media(max-width:720px){.wordmark{flex-basis:190px;max-width:190px}.brand-logo{max-height:64px}}
+@media(max-width:400px){.wordmark{flex-basis:166px;max-width:166px}.brand-logo{max-height:56px}}

@@ -1,4 +1,5 @@
 const tr = {
+  'brand.home':'BERBER ana sayfa',
   "panel.manual": "Randevu Ekle",
   "panel.blocked": "Engellenen Müşteriler",
   "status.no_show": "Gelmedi",
