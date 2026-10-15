@@ -27,10 +27,11 @@ export async function galleryPanel(container,current,shop,onCover){
     controls(busy);
   }
   async function upload(files){if(busy||!current()||!files.length)return;if(files.length+rows.length>12){say(t('gallery.limit'));input.value='';return;}
-    await task(async()=>{for(let index=0;index<files.length;index++){if(!current())break;say(t('gallery.uploading',{count:index+1,total:files.length}));await uploadGalleryPhoto(shop.id,files[index]);}input.value='';});
+    try{await task(async()=>{for(let index=0;index<files.length;index++){if(!current())break;say(t('gallery.uploading',{count:index+1,total:files.length}));await uploadGalleryPhoto(shop.id,files[index]);}});}finally{input.value='';}
   }
   input.addEventListener('change',()=>void upload([...input.files]));
   for(const name of ['dragenter','dragover'])drop.addEventListener(name,event=>{event.preventDefault();if(!busy)drop.classList.add('gallery-drop--active');});
   for(const name of ['dragleave','drop'])drop.addEventListener(name,event=>{event.preventDefault();drop.classList.remove('gallery-drop--active');});
   drop.addEventListener('drop',event=>void upload([...event.dataTransfer.files]));await refresh();
 }
+
