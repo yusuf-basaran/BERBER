@@ -1,3 +1,4 @@
+import {coordinatePicker} from './maps.js';
 import {calendarPanel,statisticsPanel} from './panel-calendar.js';
 import {reviewManagement} from './review-management.js';
 import {sharingPanel} from './sharing.js';
@@ -55,6 +56,7 @@ async function profile(container,currentView=()=>true){const form=el('form',{cla
   if(current.verification_status==='approved')field(form,'autoApprove','auto.title',{value:current.auto_approve_mode||'off',options:['off','trusted','all'].map(v=>[v,t('auto.'+v)])});
   field(form,'cancelHours','manual.cancelHours',{type:'number',value:current.cancel_hours_before??2,min:0,max:8760,step:1,required:true});form.append(el('p',{text:t('manual.cancelHint'),className:'field-hint'}));
   field(form,'address','field.address',{type:'textarea',value:current.address,maxlength:500,required:true});field(form,'phone','field.phone',{type:'tel',value:current.phone||context.profile.phone,required:true});field(form,'whatsapp','panel.whatsapp',{type:'tel',value:current.whatsapp});field(form,'instagramUrl','application.instagram',{type:'url',value:current.instagram_url,maxlength:100});field(form,'mapUrl','panel.mapUrl',{type:'url',value:current.map_url,maxlength:2000});field(form,'bio','panel.bio',{type:'textarea',value:current.bio,maxlength:2000});const active=field(form,'isActive','panel.active',{type:'checkbox',value:current.is_active??true});
+  coordinatePicker(form,current,currentView);
   bind(form,async()=>{shop=await api.saveShop({...values(form),isActive:active.checked});applicationState=await application(shop.id);render();});container.append(form);
   if(shop){const photo=el('form',{className:'panel-photo panel-form'},[el('h3',{text:t('panel.photo')}),shopPhoto(shop,{large:true}),el('p',{text:t('panel.photoHint'),className:'intro'})]);const input=field(photo,'photo','panel.photo',{type:'file',accept:'image/jpeg,image/png,image/webp',required:true});bind(photo,async()=>{shop.photo_url=await api.uploadPhoto(input.files[0]);applicationState=await application(shop.id);render();});if(shop.photo_url)photo.append(button('panel.removePhoto',node=>mutation(node,'panel.removePhotoConfirm',async()=>{await api.removePhoto();shop=await api.getOwnedShop();applicationState=await application(shop.id);render();})));container.append(photo);await documentPanel(container,shop.id,currentView);}
 }

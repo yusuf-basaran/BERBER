@@ -2,6 +2,7 @@ export const config = Object.freeze({
   supabaseUrl: 'https://tyxtpfykgitqfhqjkayn.supabase.co',
   supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR5eHRwZnlrZ2l0cWZocWprYXluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIwMTQxODIsImV4cCI6MjEwNzU5MDE4Mn0.-NG0Vb7Cq-P9sIAaw8noBOw44RMvoi7TpdIf50yw4sc',
   turnstileSiteKey: '',
+  mapTiles: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
   timeZone: 'Europe/Nicosia',
   locale: 'tr-TR',
   storageBucket: 'barber-photos',
