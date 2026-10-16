@@ -2,7 +2,7 @@ import { supabase } from './supabase.js';
 import { demoLocations, demoBarbers } from './demo.js';
 import { t } from './i18n.js';
 import { isUuid } from './slots.js';
-const fields='id,shop_name,city,district,address,map_url,phone,whatsapp,bio,photo_url,avg_rating,review_count,is_active,cancel_hours_before,slug';
+const fields='id,shop_name,city,district,address,map_url,phone,whatsapp,bio,photo_url,avg_rating,review_count,is_active,cancel_hours_before,slug,verification_status,lat,lng';
 const result=value=>{if(value.error)throw value.error;return value.data;};
 export const categories=Object.freeze([
   ['Saç Kesimi','category.hair'],['Sakal','category.beard'],['Saç + Sakal','category.hairBeard'],['Cilt Bakımı','category.skin'],

@@ -1,0 +1,7 @@
+{
+  "name": "berber",
+  "private": true,
+  "version": "1.0.0",
+  "engines": {"node": "24.x"},
+  "scripts": {"seo": "node scripts/seo-uret.js"}
+}

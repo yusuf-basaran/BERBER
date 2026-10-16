@@ -53,7 +53,7 @@
   "rewrites": [
     {
       "source": "/b/:slug",
-      "destination": "/berber.html"
+      "destination": "/api/berber-onizleme?slug=:slug"
     },
     {
       "source": "/supabase/:path*",
@@ -62,6 +62,25 @@
     {
       "source": "/README.md",
       "destination": "/404.html"
+    },
+    {
+      "source": "/lib/:path*",
+      "destination": "/404.html"
+    },
+    {
+      "source": "/scripts/:path*",
+      "destination": "/404.html"
+    },
+    {
+      "source": "/.seo-dosyalar.json",
+      "destination": "/404.html"
     }
-  ]
+  ],
+  "functions": {
+    "api/berber-onizleme.js": {
+      "includeFiles": "{berber.html,404.html,js/config.js}",
+      "maxDuration": 10
+    }
+  }
 }
+

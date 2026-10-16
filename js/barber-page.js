@@ -1,3 +1,4 @@
+import {barberSeo} from './seo.js';
 import {waitlistForm} from './waitlist.js';
 import {createFavoriteControls} from './favorite-button.js';
 import {mountGallery} from './gallery-view.js';
@@ -52,6 +53,7 @@ async function reviews(target=1) {
   }catch(error){if(reviewDisposed||current!==reviewRun)return false;const warning=target===1?reviewBox:reviewBox.querySelector('[data-review-error]')||element('div',{attrs:{'data-review-error':''}});if(target>1&&!warning.isConnected)reviewBox.append(warning);showErrorState(warning,error,()=>void reviews(target));return false;}finally{if(!reviewDisposed&&current===reviewRun)more.disabled=false;}
 }
 function detail(value) {
+  barberSeo(value,{demo});
   const contacts=element('div',{className:'contact-actions'});if(!demo)contacts.append(favorites.button(value));
   if(!demo&&safeHref(`tel:${value.phone}`))contacts.append(element('a',{text:t('barber.call'),className:'button button--secondary',attrs:{href:`tel:${value.phone}`}}));
   if(!demo&&/^\+905\d{9}$/.test(value.whatsapp||''))contacts.append(element('a',{text:t('barber.whatsapp'),className:'button button--secondary',attrs:{href:`https://wa.me/${value.whatsapp.slice(1)}`,target:'_blank'}}));
@@ -89,7 +91,7 @@ form.addEventListener('submit',event=>{
 });
 async function initialize() {
   panel.hidden=true;document.querySelector('[data-detail-columns]').hidden=true;showState(container,{kind:'loading',key:'common.loading'});
-  try{const slug=location.pathname.match(/^\/b\/([a-z0-9-]{3,40})\/?$/)?.[1];barber=slug?await getBarberBySlug(slug):await getBarber(id,{demo});if(barber)id=barber.id;if(!barber){container.replaceChildren(element('h1',{text:t('barber.notFound')}),element('a',{text:t('nav.home'),className:'text-button',attrs:{href:pageUrl('home')}}));return;}
+  try{const slug=location.pathname.match(/^\/b\/([a-z0-9-]{3,40})\/?$/)?.[1];barber=slug?await getBarberBySlug(slug):await getBarber(id,{demo});if(barber)id=barber.id;if(!barber){barberSeo(null);container.replaceChildren(element('h1',{text:t('barber.notFound')}),element('a',{text:t('nav.home'),className:'text-button',attrs:{href:pageUrl('home')}}));return;}
     detail(barber);void favorites.sync();document.querySelector('[data-detail-columns]').hidden=false;const dates=bookingDates();form.elements.date.min=dates.min;form.elements.date.max=dates.max;form.elements.date.value=dates.min;
     const date=params.get('date');try{calendarDate(date);if(date>=dates.min&&date<=dates.max)form.elements.date.value=date;}catch{}
     const serviceId=params.get('service');if(barber.services.some(service=>service.id===serviceId))form.elements.serviceId.value=serviceId;

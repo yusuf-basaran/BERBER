@@ -54,7 +54,7 @@ form.addEventListener('submit',event=>{event.preventDefault();page=1;void search
 document.querySelector('[data-clear-filters]').addEventListener('click',()=>{form.reset();districts();position=null;nearbyButton.textContent=t('map.nearby');page=1;void search();});
 async function initialize() {
   showState(grid,{kind:'loading',key:'common.loading'});
-  try{locations=await getLocations({demo});options(form.elements.city,[...new Set(locations.map(row=>row.city))]);districts();await search();}
+  try{locations=await getLocations({demo});options(form.elements.city,[...new Set(locations.map(row=>row.city))]);const params=new URL(location.href).searchParams,city=params.get('city'),district=params.get('district');if(locations.some(row=>row.city===city))form.elements.city.value=city;districts(locations.some(row=>row.city===city&&row.district===district)?district:'');await search();}
   catch(error){showErrorState(grid,error,()=>void initialize());}
 }
 void initialize();window.addEventListener('pagehide',()=>{sequence++;mapSequence++;position=null;candidateCache=null;disposeMap();controller?.abort();favorites.dispose();},{once:true});

@@ -24,7 +24,7 @@
 | F18 | KISMİ | v3_04–05, waitlist.js | F9 e-posta kuyruğu bağlantısı |
 | F19 | VAR | v3_06, panel-calendar.js | — |
 | F20 | VAR | v3_07, maps.js, index-page.js | — |
-| F21 | KISMİ | noindex sayfaları | Statik SEO ve önizleme |
+| F21 | VAR | scripts/seo-uret.js, api/berber-onizleme.js, SEO-ONIZLEME.md | — |
 | F22 | YOK | — | Kampanya |
 | F23 | YOK | — | Sadakat |
 | F24 | YOK | — | PWA ve push |
