@@ -1,3 +1,4 @@
+import {promotionPrices,promotionPrice,promotionSnapshot} from './promotions.js';
 import {barberSeo} from './seo.js';
 import {waitlistForm} from './waitlist.js';
 import {createFavoriteControls} from './favorite-button.js';
@@ -19,12 +20,14 @@ const container=document.querySelector('[data-detail]');const form=document.getE
 const waitBox=element('div');form.after(waitBox);
 const slotBox=document.querySelector('[data-slots]');const summary=document.querySelector('[data-booking-summary]');
 const notice=document.querySelector('[data-booking-notice]');const panel=document.querySelector('[data-booking-panel]');
-const reviewBox=document.querySelector('[data-reviews]');let barber;let available=[];let service;let controller;let load=0;let reviewPage=1;
+const reviewBox=document.querySelector('[data-reviews]');let barber;let available=[];let service;let controller;let load=0;let reviewPage=1;let priceRun=0;
 document.querySelector('[data-demo]').hidden=!demo;
 function message(value='',error=false){notice.textContent=value;notice.hidden=!value;notice.setAttribute('role',error?'alert':'status');notice.classList.toggle('notice--error',error);}
-function clearSelection(){waitBox.replaceChildren();available=[];form.elements.startAt.value='';summary.textContent='';slotBox.replaceChildren();}
+function clearSelection(){priceRun++;waitBox.replaceChildren();available=[];form.elements.startAt.value='';summary.textContent='';slotBox.replaceChildren();}
 function serviceSummary(start='') {
-  if(!service)return;summary.replaceChildren(element('strong',{text:service.name}),element('p',{text:`${formatMoney(service.price,service.currency)} · ${t('common.minutes',{count:service.duration_min})}`}),...(start?[element('p',{text:t('booking.selected',{time:formatDateTime(start)})})]:[]));
+  if(!service)return;const chosen=service,token=++priceRun;
+  summary.replaceChildren(element('strong',{text:chosen.name}),element('p',{text:start?t('common.minutes',{count:chosen.duration_min}):`${formatMoney(chosen.price,chosen.currency)} · ${t('common.minutes',{count:chosen.duration_min})}`}),...(start?[element('p',{text:t('booking.selected',{time:formatDateTime(start)})})]:[]));
+  if(start&&!demo){const price=element('div',{attrs:{role:'status'}});showState(price,{kind:'loading',key:'common.loading'});summary.append(price);void promotionPrices(id,start).then(rows=>{if(token!==priceRun)return;const quote=rows.find(r=>r.service_id===chosen.id);price.replaceChildren(...(quote?[promotionPrice(quote)]:[element('strong',{text:formatMoney(chosen.price,chosen.currency)})]));}).catch(()=>{if(token===priceRun)price.replaceChildren(element('p',{text:t('promotion.previewError'),className:'field-hint'}));});}
 }
 async function slots() {
   controller?.abort();controller=new AbortController();const current=++load;clearSelection();message();
@@ -66,8 +69,9 @@ function detail(value) {
   const services=document.querySelector('[data-services]');services.replaceChildren(...value.services.map(item=>{
     const button=element('button',{text:t('barber.chooseService'),className:'text-button',attrs:{type:'button',disabled:demo||!value.is_active}});
     button.addEventListener('click',()=>{form.elements.serviceId.value=item.id;panel.scrollIntoView({block:'start'});void slots();});
-    return element('article',{className:'service-row'},[element('div',{},[element('h3',{text:item.name}),element('p',{text:t('common.minutes',{count:item.duration_min}),className:'intro'})]),element('strong',{text:formatMoney(item.price,item.currency)}),button]);
+    return element('article',{className:'service-row'},[element('div',{},[element('h3',{text:item.name}),element('p',{text:t('common.minutes',{count:item.duration_min}),className:'intro'})]),element('div',{attrs:{'data-service-price':item.id}},[element('strong',{text:formatMoney(item.price,item.currency)})]),button]);
   }));if(!value.services.length)showState(services,{key:'barber.noServices'});
+  if(!demo)void promotionPrices(value.id).then(rows=>{for(const quote of rows){const target=services.querySelector(`[data-service-price="${quote.service_id}"]`);if(target)target.replaceChildren(promotionPrice(quote,{hint:true}));}}).catch(()=>{});
   const hours=document.querySelector('[data-hours]');hours.replaceChildren(...[1,2,3,4,5,6,0].map(day=>{
     const row=value.hours.find(row=>Number(row.weekday)===day);const text=!row||row.is_closed?t('barber.closed'):`${row.open_time.slice(0,5)}–${row.close_time.slice(0,5)}${row.break_start?` · ${t('barber.break')} ${row.break_start.slice(0,5)}–${row.break_end.slice(0,5)}`:''}`;
     return element('div',{className:'hours-row'},[element('strong',{text:t(`day.${day}`)}),element('span',{text})]);
@@ -85,7 +89,7 @@ form.addEventListener('submit',event=>{
       const context=await auth.getContext();if(context.status!=='ready'){window.location.assign(destination(context,pageUrl('barber',{id,service:form.elements.serviceId.value,date:form.elements.date.value})));return;}
       const startAt=form.elements.startAt.value;if(!available.some(slot=>slot.start_at===startAt)||Date.parse(startAt)<=Date.now())throw new FormError({startAt:t('error.slotRequired')});
       const saved=await requestAppointment({barberId:id,serviceId:form.elements.serviceId.value,startAt,note:form.elements.note.value});
-      form.hidden=true;slotBox.replaceChildren();waitBox.replaceChildren();summary.replaceChildren(element('h3',{text:t(saved.status==='confirmed'?'status.confirmed':'booking.submittedTitle')}),element('p',{text:t(saved.status==='confirmed'?'booking.autoConfirmed':'booking.sent')}),element('p',{text:`${formatDateTime(saved.start_at)} · ${formatMoney(saved.price_at_booking,saved.currency_at_booking)}`}),element('a',{text:t('booking.viewAppointments'),className:'button',attrs:{href:pageUrl('appointments')}}));
+      priceRun++;form.hidden=true;slotBox.replaceChildren();waitBox.replaceChildren();summary.replaceChildren(element('h3',{text:t(saved.status==='confirmed'?'status.confirmed':'booking.submittedTitle')}),element('p',{text:t(saved.status==='confirmed'?'booking.autoConfirmed':'booking.sent')}),element('p',{text:`${formatDateTime(saved.start_at)} · ${formatMoney(saved.price_at_booking,saved.currency_at_booking)}`}),element('a',{text:t('booking.viewAppointments'),className:'button',attrs:{href:pageUrl('appointments')}}));const deal=promotionSnapshot(saved);if(deal)summary.append(deal);
     }catch(error){if(error instanceof FormError){showFormErrors(form,error.fields);message(t(error.fields.startAt?'error.slotRequired':'error.validation'),true);}else message(errorMessage(error),true);if(error.code==='P2007')notice.append(element('a',{text:t('profile.title'),attrs:{href:pageUrl('profile')}}));if(error.code==='23P01')await slots().then(()=>message(t('error.conflict'),true));}
   });
 });
@@ -102,4 +106,4 @@ async function initialize() {
     await reviews();
   }catch(error){showErrorState(container,error,()=>void initialize());}
 }
-void initialize();window.addEventListener('pagehide',()=>{disposeGallery();favorites.dispose();load++;reviewDisposed=true;reviewRun++;controller?.abort();},{once:true});
+void initialize();window.addEventListener('pagehide',()=>{disposeGallery();favorites.dispose();load++;priceRun++;reviewDisposed=true;reviewRun++;controller?.abort();},{once:true});

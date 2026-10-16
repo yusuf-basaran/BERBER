@@ -1,8 +1,9 @@
+import {promotionPrices,promotionPrice} from './promotions.js';
 import {getServices} from './panel.js';
 import {findCustomer,createManual,getBlocked,setBlocked} from './manual.js';
 import {getSlots,bookingDates,slotLabel} from './slots.js';
 import {t} from './i18n.js';
-import {element as el,showState,showErrorState,withFormTask,clearFormErrors,showFormErrors,toast,errorMessage,confirmAction} from './ui.js';
+import {element as el,formatMoney,showState,showErrorState,withFormTask,clearFormErrors,showFormErrors,toast,errorMessage,confirmAction} from './ui.js';
 let sequence=0;
 function field(form,name,key,{type='text',options,...attrs}={}){
   const id=`manual-${++sequence}`;
@@ -30,12 +31,13 @@ export async function manualForm(container,current,shop,onSaved,seed={}){
   form.append(search,matches);
   const service=field(form,'serviceId','panel.serviceName',{required:true,options:[['',t('common.select')],...services.map(row=>[row.id,row.name])]});
   const dates=bookingDates(),date=field(form,'date','field.date',{type:'date',required:true,min:dates.min,max:dates.max});date.value=dates.min;
-  const slotBox=el('fieldset',{className:'slot-options'});showState(slotBox,{key:'booking.selectPrompt'});form.append(slotBox);let selected='';
-  const load=async()=>{selected='';slots=[];const attempt=++slotRun;slotBox.replaceChildren();if(!service.value){showState(slotBox,{key:'booking.selectPrompt'});return;}
+  const slotBox=el('fieldset',{className:'slot-options'});showState(slotBox,{key:'booking.selectPrompt'});form.append(slotBox);let selected='';let priceRun=0;const price=el('div',{attrs:{role:'status'}});form.append(price);
+  const preview=async()=>{const token=++priceRun;price.replaceChildren();if(!selected)return;showState(price,{kind:'loading',key:'common.loading'});try{const rows=await promotionPrices(shop.id,selected);if(!current()||token!==priceRun)return;const quote=rows.find(r=>r.service_id===service.value),item=services.find(r=>r.id===service.value);price.replaceChildren(...(quote?[promotionPrice(quote)]:[el('p',{text:formatMoney(item.price,item.currency)})]));}catch{if(current()&&token===priceRun)price.replaceChildren(el('p',{text:t('promotion.previewError'),className:'field-hint'}));}};
+  const load=async()=>{priceRun++;price.replaceChildren();selected='';slots=[];const attempt=++slotRun;slotBox.replaceChildren();if(!service.value){showState(slotBox,{key:'booking.selectPrompt'});return;}
     showState(slotBox,{kind:'loading',key:'common.loading'});
     try{const rows=await getSlots(shop.id,service.value,date.value);if(!current()||attempt!==slotRun)return;slots=rows;slotBox.replaceChildren(el('legend',{text:t('field.time')}));slotBox.setAttribute('aria-busy','false');
       if(!rows.length)slotBox.append(el('p',{text:t('booking.noSlots')}));
-      for(const row of rows){const id=`manual-slot-${++sequence}`,input=el('input',{attrs:{type:'radio',name:'startAt',id,value:row.start_at,required:true}});input.addEventListener('change',()=>{selected=row.start_at;});if(seed.startAt===row.start_at){input.checked=true;selected=row.start_at;}slotBox.append(el('label',{className:'slot-choice',attrs:{for:id}},[input,el('span',{text:slotLabel(row.start_at,rows)})]));}
+      for(const row of rows){const id=`manual-slot-${++sequence}`,input=el('input',{attrs:{type:'radio',name:'startAt',id,value:row.start_at,required:true}});input.addEventListener('change',()=>{selected=row.start_at;void preview();});if(seed.startAt===row.start_at){input.checked=true;selected=row.start_at;void preview();}slotBox.append(el('label',{className:'slot-choice',attrs:{for:id}},[input,el('span',{text:slotLabel(row.start_at,rows)})]));}
     }catch(error){if(current()&&attempt===slotRun)showErrorState(slotBox,error,load);}
   };
   service.addEventListener('change',()=>{seed={};void load();});date.addEventListener('change',()=>{seed={};void load();});

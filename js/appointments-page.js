@@ -1,3 +1,4 @@
+import {promotionSnapshot} from './promotions.js';
 import {waitlistList} from './waitlist.js';
 import {calendarActions} from './calendar-actions.js';
 import { mountLayout } from './layout.js';
@@ -24,6 +25,7 @@ function card(appointment,review,reviewError) {
     element('p',{text:shop?t('barber.location',{city:shop.city,district:shop.district}):'',className:'intro'}),
     element('div',{className:'appointment-facts'},[element('strong',{text:appointment.service_name_at_booking}),element('time',{text:formatDateTime(appointment.start_at),attrs:{datetime:appointment.start_at}}),element('span',{text:`${formatMoney(appointment.price_at_booking,appointment.currency_at_booking)} · ${t('common.minutes',{count:appointment.duration_at_booking})}`})])
   ];
+  const deal=promotionSnapshot(appointment);if(deal)contents.push(deal);
   if(appointment.status==='counter_proposed')contents.push(element('p',{text:t('appointments.proposedTime',{time:formatDateTime(appointment.proposed_start_at)}),className:'notice'}));
   if(appointment.customer_note)contents.push(element('p',{text:`${t('appointments.customerNote')}: ${appointment.customer_note}`,className:'appointment-note'}));
   if(appointment.barber_note)contents.push(element('p',{text:`${t('appointments.barberNote')}: ${appointment.barber_note}`,className:'appointment-note'}));

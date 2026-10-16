@@ -25,7 +25,7 @@
 | F19 | VAR | v3_06, panel-calendar.js | — |
 | F20 | VAR | v3_07, maps.js, index-page.js | — |
 | F21 | VAR | scripts/seo-uret.js, api/berber-onizleme.js, SEO-ONIZLEME.md | — |
-| F22 | YOK | — | Kampanya |
+| F22 | VAR | promotions, v3_08_kampanyalar.sql, panel-promotions.js, KAMPANYALAR.md | — |
 | F23 | YOK | — | Sadakat |
 | F24 | YOK | — | PWA ve push |
 | F25 | KISMİ | i18n.js | İngilizce sözlük ve hukuki sayfalar |

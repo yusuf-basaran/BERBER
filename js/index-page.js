@@ -1,3 +1,4 @@
+import {promotionCards,promotionPrice} from './promotions.js';
 import {mapCandidates,shopMap,distanceKm,hasCoordinates} from './maps.js';
 import {barberCard} from './barber-card.js';
 import {createFavoriteControls} from './favorite-button.js';
@@ -47,7 +48,7 @@ async function search() {
     if(position&&!demo){const data=await candidates(Object.fromEntries(new FormData(form))),origin=position;if(!origin||current!==sequence)return;const rows=data.rows.map(row=>({...row,distance:hasCoordinates(row)?distanceKm(origin,{lat:Number(row.lat),lng:Number(row.lng)}):null})).sort((a,b)=>(a.distance??Infinity)-(b.distance??Infinity)||String(a.id).localeCompare(String(b.id)));result={rows:rows.slice((page-1)*12,page*12),total:rows.length};if(data.limited)mapNotice.textContent=t('map.limited');}
     else result=await searchBarbers(values,{demo,signal:controller.signal});
     if(current!==sequence)return;grid.setAttribute('aria-busy','false');count.textContent=t('search.results',{count:result.total});
-    if(!result.rows.length)showState(grid,{key:'search.empty'});else grid.replaceChildren(...result.rows.map(card));pagination(result.total);void favorites.sync();if(mapView)void drawMap();
+    if(!result.rows.length)showState(grid,{key:'search.empty'});else grid.replaceChildren(...result.rows.map(card));pagination(result.total);if(!demo&&result.rows.length)void promotionCards(result.rows,values.currency||'TRY').then(deals=>{if(current!==sequence)return;for(const quote of deals){const target=grid.querySelector(`[data-barber-id="${quote.barber_id}"] .barber-card-body`);if(target)target.append(element('p',{text:quote.service_name}),promotionPrice(quote,{hint:true}));}}).catch(()=>{});void favorites.sync();if(mapView)void drawMap();
   }catch(error){if(current===sequence&&!controller.signal.aborted)showErrorState(grid,error,()=>void search());}
 }
 form.addEventListener('submit',event=>{event.preventDefault();page=1;void search();});

@@ -3,7 +3,7 @@ import {t} from './i18n.js';
 import {element,shopPhoto,formatMoney} from './ui.js';
 export function barberCard(barber,{demo=false,favorites,booking=false}={}){
   const rating=Number(barber.avg_rating).toLocaleString('tr-TR',{minimumFractionDigits:1,maximumFractionDigits:1});
-  const card=element('article',{className:'barber-card'});
+  const card=element('article',{className:'barber-card',attrs:{'data-barber-id':barber.id}});
   const link=element('a',{className:'barber-card-link',attrs:{href:pageUrl('barber',{id:barber.id,...(demo?{demo:'1'}:{})})}},[
     shopPhoto(barber),element('div',{className:'barber-card-body'},[
       element('h2',{text:barber.shop_name}),element('p',{text:t('barber.location',{city:barber.city,district:barber.district}),className:'card-location'}),

@@ -3,7 +3,7 @@ import { auth, FormError } from './auth.js';
 import { isUuid } from './slots.js';
 import { t } from './i18n.js';
 export const statuses=Object.freeze(['pending','confirmed','rejected','counter_proposed','cancelled','completed','no_show']);
-export const appointmentFields='id,barber_id,customer_id,service_id,start_at,end_at,status,customer_note,barber_note,proposed_start_at,proposed_end_at,price_at_booking,currency_at_booking,duration_at_booking,service_name_at_booking,created_at,source,barber:barbers(id,shop_name,city,district,address,phone,whatsapp,cancel_hours_before)';
+export const appointmentFields='id,barber_id,customer_id,service_id,start_at,end_at,status,customer_note,barber_note,proposed_start_at,proposed_end_at,price_at_booking,base_price_at_booking,discount_at_booking,promotion_title_at_booking,currency_at_booking,duration_at_booking,service_name_at_booking,created_at,source,barber:barbers(id,shop_name,city,district,address,phone,whatsapp,cancel_hours_before)';
 const fail=key=>{const error=new Error(t(key));error.userMessage=t(key);return error;};
 async function customer() {
   const context=await auth.getContext();

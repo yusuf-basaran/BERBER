@@ -24,7 +24,8 @@ Elle: /girne-berber ve semt sayfasını JavaScript kapalı aç; tüm sonuçlar b
 
 ## Advisors ve geri dönüş
 
+Üretim doğrulaması: 8dedabc commit'inin push çalışması GitHub Actions üzerinde başarıyla tamamlandı; üretim ve değişiklik kontrolü adımları geçti. [Çalışma kaydı](https://github.com/yusuf-basaran/BERBER/actions/runs/38973553524). Veri değişmediği için ek üretim commit'i oluşmadı.
+
 Advisors tekrar kontrol edildi; yeni bulgu yok. Önceki dört bilinçli kapalı RLS tablosu, bir anonim/dört oturumlu definer, kapalı sızmış parola koruması, yirmi kullanılmamış indeks ve çoklu randevu UPDATE politikası bulgusu sürer. [RLS](https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy), [definer izinleri](https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable), [parola koruması](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection), [indeks](https://supabase.com/docs/guides/database/database-linter?lint=0005_unused_index), [politikalar](https://supabase.com/docs/guides/database/database-linter?lint=0006_multiple_permissive_policies).
 
 Geri dönüşte /b/:slug eski /berber.html rewrite'ına alınabilir; fonksiyon ve günlük workflow devre dışı bırakılır. Veritabanı etkilenmez. Domain satın alma/bağlama yapılmadı; canonical/sitemap üretim adresi https://berber-1.vercel.app olarak korunur. Domain geçişinde SITE_ORIGIN, ana sayfa canonical, Auth URL'leri ve izinli origin ayarları birlikte güncellenmelidir. [Vercel Node fonksiyonları](https://vercel.com/docs/functions/runtimes/node-js), [LocalBusiness şeması](https://developers.google.com/search/docs/appearance/structured-data/local-business).
-
