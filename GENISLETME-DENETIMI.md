@@ -27,6 +27,6 @@
 | F21 | VAR | scripts/seo-uret.js, api/berber-onizleme.js, SEO-ONIZLEME.md | — |
 | F22 | VAR | promotions, v3_08_kampanyalar.sql, panel-promotions.js, KAMPANYALAR.md | — |
 | F23 | VAR | loyalty_progress, loyalty_redemptions, v3_09_sadakat.sql, SADAKAT.md | — |
-| F24 | YOK | — | PWA ve push |
+| F24 | KISMİ | manifest.webmanifest, sw.js, pwa.js, PWA.md | Push aboneliği, VAPID ve bildirim/hatırlatma gönderimi |
 | F25 | KISMİ | i18n.js | İngilizce sözlük ve hukuki sayfalar |
 | F26 | YOK | appointments_no_overlap | Çalışan geçiş planı ve uygulama |

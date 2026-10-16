@@ -27,7 +27,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com https://esm.sh https://challenges.cloudflare.com; style-src 'self' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://tile.openstreetmap.org data: blob: https://tyxtpfykgitqfhqjkayn.supabase.co; connect-src 'self' https://esm.sh https://tyxtpfykgitqfhqjkayn.supabase.co wss://tyxtpfykgitqfhqjkayn.supabase.co https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+          "value": "default-src 'self'; script-src 'self' https://unpkg.com/leaflet@1.9.4/dist/leaflet.js https://cdnjs.cloudflare.com https://esm.sh https://challenges.cloudflare.com; style-src 'self' https://unpkg.com/leaflet@1.9.4/dist/leaflet.css https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://tile.openstreetmap.org data: blob: https://tyxtpfykgitqfhqjkayn.supabase.co; connect-src 'self' https://esm.sh https://tyxtpfykgitqfhqjkayn.supabase.co wss://tyxtpfykgitqfhqjkayn.supabase.co https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; worker-src 'self'; manifest-src 'self'"
         }
       ]
     },
@@ -43,6 +43,36 @@
     {
       "source": "/css/(.*)",
       "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, max-age=0, must-revalidate"
+        },
+        {
+          "key": "Vercel-CDN-Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "Service-Worker-Allowed",
+          "value": "/"
+        }
+      ]
+    },
+    {
+      "source": "/manifest.webmanifest",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/manifest+json"
+        },
         {
           "key": "Cache-Control",
           "value": "public, max-age=0, must-revalidate"
@@ -83,4 +113,3 @@
     }
   }
 }
-

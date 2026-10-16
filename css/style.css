@@ -452,3 +452,13 @@ input:not([type=checkbox]):not([type=radio]),select,textarea{background:var(--yu
 .loyalty-section { margin-block:var(--bosluk-6); }
 .loyalty-card { padding:var(--bosluk-5); margin-block:var(--bosluk-4); background:var(--yuzey); border:1px solid var(--kenarlik); border-radius:var(--yaricap-buyuk); overflow-wrap:anywhere; }
 .loyalty-card progress { display:block; width:100%; height:var(--bosluk-4); accent-color:var(--bakir); }
+
+.pwa-notices { grid-column:1/-1; }
+.pwa-notices:empty { display:none; }
+.pwa-notice { padding:var(--bosluk-4); margin-block:var(--bosluk-4); border:1px solid var(--kenarlik); border-radius:var(--yaricap); background:var(--yuzey); display:flex; flex-wrap:wrap; align-items:center; gap:var(--bosluk-3); }
+.pwa-notice p { flex:1 1 240px; margin:0; }
+.pwa-notice button { min-height:44px; }
+.offline-page { max-width:600px; margin-inline:auto; padding:var(--bosluk-7) var(--bosluk-5); }
+.offline-page img { display:block; margin-block-end:var(--bosluk-5); }
+.offline-page .text-button { display:inline-flex; align-items:center; min-height:44px; margin-inline-start:var(--bosluk-4); }
+@media print { .pwa-notices { display:none!important; } }
