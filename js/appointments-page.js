@@ -1,3 +1,4 @@
+import {loyaltyList} from './loyalty.js';
 import {promotionSnapshot} from './promotions.js';
 import {waitlistList} from './waitlist.js';
 import {calendarActions} from './calendar-actions.js';
@@ -10,6 +11,7 @@ import { t } from './i18n.js';
 import { element,formatDateTime,formatMoney,showState,showErrorState,confirmAction,toast,errorMessage,openModal,withFormTask,clearFormErrors,showFormErrors } from './ui.js';
 mountLayout();const protection=protectPage({role:'customer'});
 const list=document.querySelector('[data-appointments]');const filter=document.getElementById('appointment-status');const pager=document.querySelector('[data-pager]');
+const loyaltyBox=element('section',{className:'loyalty-section'});list.after(loyaltyBox);
 let page=1;let sequence=0;let disposed=false;let reviewModal=null;let reviewEpoch=0;
 filter.replaceChildren(element('option',{text:t('common.all'),attrs:{value:''}}),...statuses.map(status=>element('option',{text:t(`status.${status}`),attrs:{value:status}})));
 function button(key,action){const node=element('button',{text:t(key),className:'button button--secondary',attrs:{type:'button'}});node.addEventListener('click',()=>void action(node));return node;}
@@ -66,7 +68,7 @@ function pagination(total) {
   pager.append(previous,element('span',{text:t('common.page',{page})}),next);
 }
 async function load() {
-  const current=++sequence;showState(list,{kind:'loading',key:'common.loading'});pager.replaceChildren();
+  const current=++sequence;void loyaltyList(loyaltyBox,()=>!disposed&&current===sequence);showState(list,{kind:'loading',key:'common.loading'});pager.replaceChildren();
   try{const value=await getAppointments({status:filter.value,page});if(disposed||current!==sequence)return;let reviews=[],reviewError=null;try{reviews=await getAppointmentReviews(value.rows.filter(row=>row.status==='completed').map(row=>row.id));}catch(error){reviewError=error;}if(disposed||current!==sequence)return;
     const byAppointment=new Map(reviews.map(review=>[review.appointment_id,review]));list.setAttribute('aria-busy','false');if(value.rows.length)list.replaceChildren(...value.rows.map(row=>card(row,byAppointment.get(row.id),reviewError)));
     else{showState(list,{key:filter.value?'appointments.noStatus':'appointments.empty'});list.append(element('a',{text:t('nav.home'),className:'text-button',attrs:{href:pageUrl('home')}}));}
@@ -75,7 +77,7 @@ async function load() {
 }
 filter.addEventListener('change',()=>{page=1;void load();});document.querySelector('[data-refresh-appointments]').addEventListener('click',()=>void load());
 void protection.ready.then(context=>{if(context)void load();});
-const unwatch=auth.watch(({context})=>{if(context?.status==='ready'&&context.profile.role==='customer')void load();},{onPending:()=>{sequence++;reviewModal?.close();list.replaceChildren();pager.replaceChildren();}});
+const unwatch=auth.watch(({context})=>{if(context?.status==='ready'&&context.profile.role==='customer')void load();},{onPending:()=>{sequence++;reviewModal?.close();list.replaceChildren();loyaltyBox.replaceChildren();pager.replaceChildren();}});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&!disposed)void load();});
 window.addEventListener('pagehide',()=>{disposed=true;sequence++;reviewModal?.close();unwatch();protection.dispose();},{once:true});
 

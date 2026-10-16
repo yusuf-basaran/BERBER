@@ -448,3 +448,7 @@ input:not([type=checkbox]):not([type=radio]),select,textarea{background:var(--yu
  .service-row > [data-service-price] { grid-column:1/-1; grid-row:2; }
  .service-row > button { grid-column:2; grid-row:1; }
 }
+
+.loyalty-section { margin-block:var(--bosluk-6); }
+.loyalty-card { padding:var(--bosluk-5); margin-block:var(--bosluk-4); background:var(--yuzey); border:1px solid var(--kenarlik); border-radius:var(--yaricap-buyuk); overflow-wrap:anywhere; }
+.loyalty-card progress { display:block; width:100%; height:var(--bosluk-4); accent-color:var(--bakir); }

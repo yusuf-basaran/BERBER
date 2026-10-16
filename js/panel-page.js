@@ -1,3 +1,4 @@
+import {loyaltyPanel} from './panel-loyalty.js';
 import {promotionsPanel} from './panel-promotions.js';
 import {promotionSnapshot} from './promotions.js';
 import {coordinatePicker} from './maps.js';
@@ -22,7 +23,7 @@ import { element as el,formatDateTime,formatTime,formatMoney,localDate,toast,err
 mountLayout();const protection=protectPage({role:'barber'});const root=document.querySelector('[data-panel]');
 let applicationState=null,manualSeed=null;
 let shop,context,locations=[],tab='requests',disposed=false,epoch=0,writing=false;
-const allTabs=['requests','manual','profile','gallery','services','hours','closed','reviews','blocked','sharing','calendar','statistics','promotions'];
+const allTabs=['requests','manual','profile','gallery','services','hours','closed','reviews','blocked','sharing','calendar','statistics','promotions','loyalty'];
 const button=(key,run,primary=false)=>{const node=el('button',{text:t(key),className:`button${primary?'':' button--secondary'}`,attrs:{type:'button'}});node.addEventListener('click',()=>void run(node));return node;};
 const option=(value,text)=>el('option',{text,attrs:{value}});
 let fieldId=0;
@@ -49,7 +50,7 @@ function render(){epoch++;root.replaceChildren();if(!shop){tab='profile';root.ap
   for(const name of labels){const node=button(`panel.${name}`,()=>{tab=name;render();root.querySelector(`[data-tab="${name}"]`)?.focus();});node.dataset.tab=name;node.id=`tab-${name}`;node.setAttribute('role','tab');node.setAttribute('aria-selected',String(tab===name));node.setAttribute('aria-controls','panel-content');node.tabIndex=tab===name?0:-1;node.addEventListener('keydown',event=>{let i=labels.indexOf(name);if(event.key==='ArrowRight')i=(i+1)%labels.length;else if(event.key==='ArrowLeft')i=(i+labels.length-1)%labels.length;else if(event.key==='Home')i=0;else if(event.key==='End')i=labels.length-1;else return;event.preventDefault();tab=labels[i];render();root.querySelector(`[data-tab="${tab}"]`).focus();});nav.append(node);}root.append(nav);
   }
   const content=el('section',{className:'panel-content',attrs:{id:'panel-content',...(shop?{role:'tabpanel','aria-labelledby':`tab-${tab}`}:{})}});root.append(content);
-  const seq=epoch;const renderers={promotions:(container,current)=>promotionsPanel(container,current,shop),calendar:(container,current)=>calendarPanel(container,current,shop,{card:requestCard,manual:seed=>{manualSeed=seed;tab='manual';render();}}),statistics:statisticsPanel,sharing:(container,current)=>sharingPanel(container,current,shop),profile:profile,services,hours,closed,reviews,requests,gallery:(content,current)=>galleryPanel(content,current,shop,url=>{shop.photo_url=url;}),manual:(content,current)=>{const seed=manualSeed;manualSeed=null;return manualForm(content,current,shop,()=>{tab=seed?'calendar':'requests';render();},seed||{});},blocked:(content,current)=>blockedList(content,current,shop)};void renderers[tab](content,()=>!disposed&&epoch===seq).catch(error=>{if(!disposed&&epoch===seq)showErrorState(content,error,()=>render());});
+  const seq=epoch;const renderers={loyalty:(container,current)=>loyaltyPanel(container,current,shop),promotions:(container,current)=>promotionsPanel(container,current,shop),calendar:(container,current)=>calendarPanel(container,current,shop,{card:requestCard,manual:seed=>{manualSeed=seed;tab='manual';render();}}),statistics:statisticsPanel,sharing:(container,current)=>sharingPanel(container,current,shop),profile:profile,services,hours,closed,reviews,requests,gallery:(content,current)=>galleryPanel(content,current,shop,url=>{shop.photo_url=url;}),manual:(content,current)=>{const seed=manualSeed;manualSeed=null;return manualForm(content,current,shop,()=>{tab=seed?'calendar':'requests';render();},seed||{});},blocked:(content,current)=>blockedList(content,current,shop)};void renderers[tab](content,()=>!disposed&&epoch===seq).catch(error=>{if(!disposed&&epoch===seq)showErrorState(content,error,()=>render());});
 }
 async function profile(container,currentView=()=>true){const form=el('form',{className:'panel-form'});const current=shop||{};
   field(form,'shopName','panel.shopName',{value:current.shop_name,maxlength:120,required:true});

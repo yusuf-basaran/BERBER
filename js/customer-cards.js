@@ -1,3 +1,4 @@
+import {ownerLoyalty} from './loyalty.js';
 import {supabase} from './supabase.js';
 import {auth} from './auth.js';
 import {element as el,formatDateTime,showState,showErrorState,withFormTask,errorMessage,toast} from './ui.js';
@@ -13,7 +14,7 @@ export function customerCardControl(row){
   const stop=auth.watch(()=>{}, {onPending:clear});window.addEventListener('pagehide',()=>{clear();stop();},{once:true});
   async function load(){const token=++sequence;showState(content,{kind:'loading',key:'common.loading'});try{const data=await card(row);if(!details.isConnected||token!==sequence)return;loaded=true;
     content.replaceChildren(el('h3',{text:data.full_name}));if(data.phone)content.append(el('a',{text:data.phone,attrs:{href:'tel:'+data.phone}}));
-    const stats=el('dl',{className:'customer-stats'});for(const key of ['total','completed','customer_cancelled','no_show'])stats.append(el('dt',{text:t('cards.'+key)}),el('dd',{text:String(data[key])}));content.append(stats);
+    const stats=el('dl',{className:'customer-stats'});for(const key of ['total','completed','customer_cancelled','no_show'])stats.append(el('dt',{text:t('cards.'+key)}),el('dd',{text:String(data[key])}));content.append(stats);const loyalty=el('section');content.append(loyalty);void ownerLoyalty(loyalty,row,()=>details.isConnected&&token===sequence);
     if(data.global_no_show!==null)content.append(el('p',{text:t('manual.noShowCount',{count:data.global_no_show})}));
     for(const key of ['first_visit','last_visit','favorite_service'])if(data[key])content.append(el('p',{text:t('cards.'+key)+': '+(key==='favorite_service'?data[key]:formatDateTime(data[key]))}));
     content.append(el('h4',{text:t('cards.customerNote')}),el('p',{text:data.preference_note||t('cards.noNote')}));
