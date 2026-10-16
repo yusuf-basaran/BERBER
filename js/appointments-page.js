@@ -1,3 +1,4 @@
+import {waitlistList} from './waitlist.js';
 import {calendarActions} from './calendar-actions.js';
 import { mountLayout } from './layout.js';
 import { protectPage,auth } from './auth.js';
@@ -75,3 +76,5 @@ void protection.ready.then(context=>{if(context)void load();});
 const unwatch=auth.watch(({context})=>{if(context?.status==='ready'&&context.profile.role==='customer')void load();},{onPending:()=>{sequence++;reviewModal?.close();list.replaceChildren();pager.replaceChildren();}});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&!disposed)void load();});
 window.addEventListener('pagehide',()=>{disposed=true;sequence++;reviewModal?.close();unwatch();protection.dispose();},{once:true});
+
+void auth.getContext().then(context=>{if(context.status==='ready'&&context.profile.role==='customer'){const main=document.querySelector('[data-protected]');if(main)void waitlistList(main);}}).catch(()=>{});

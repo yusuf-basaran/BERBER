@@ -16,7 +16,7 @@ export async function galleryPanel(container,current,shop,onCover){
     const active=rows.filter(row=>row.ready&&!row.deleted_at);
     for(const [index,row] of rows.entries()){
       const ready=row.ready&&!row.deleted_at,position=active.indexOf(row),alt=photoAlt(row,shop,index),card=el('article',{className:'gallery-edit-card'});
-      if(ready)card.append(el('img',{attrs:{src:photoUrl(row),alt,loading:'lazy',decoding:'async',width:640,height:480}}));else card.append(el('p',{text:t('gallery.incomplete'),className:'notice'}));
+      if(ready)card.append(el('img',{attrs:{src:photoUrl(row,{thumbnail:true}),alt,loading:'lazy',decoding:'async',width:640,height:480}}));else card.append(el('p',{text:t('gallery.incomplete'),className:'notice'}));
       if(ready){const id=`gallery-caption-${row.id}`,caption=el('textarea',{attrs:{id,maxlength:200,rows:2}});caption.value=row.caption;const form=el('form',{className:'field'},[el('label',{text:t('gallery.caption'),attrs:{for:id}}),caption]);const save=el('button',{text:t('common.save'),className:'button button--secondary',attrs:{type:'submit'}});form.append(save);form.addEventListener('submit',event=>{event.preventDefault();void task(()=>saveCaption(shop.id,row.id,caption.value));});card.append(form);
         const cover=shop.photo_url===photoUrl(row),toolbar=el('div',{className:'gallery-actions'});
         for(const [delta,key] of [[-1,'gallery.up'],[1,'gallery.down']])toolbar.append(action(key,async()=>{const ids=active.map(p=>p.id),next=position+delta;[ids[position],ids[next]]=[ids[next],ids[position]];await reorderGallery(shop.id,ids);},{disabled:position+delta<0||position+delta>=active.length,label:t(key)+' · '+alt}));

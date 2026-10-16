@@ -116,6 +116,7 @@ export function createAuthManager(client) {
     const data = checkResult(await client.auth.signUp({
       email: input.email, password: input.password,
       options: {
+        captchaToken:values.captchaToken,
         emailRedirectTo: pageUrl('login', { verified: '1' }),
         data: { role: input.role, full_name: input.fullName, phone: input.phone, terms_accepted: true, privacy_accepted: true, ...(input.role==='barber'&&values.shopApplication?{shop_application:values.shopApplication}:{}) }
       }
@@ -127,9 +128,9 @@ export function createAuthManager(client) {
     }
     return { confirmationRequired: true };
   }
-  async function signIn(email, password) {
+  async function signIn(email, password, captchaToken) {
     const value = validateLogin(email, password);
-    checkResult(await client.auth.signInWithPassword({ email: value, password }));
+    checkResult(await client.auth.signInWithPassword({ email: value, password, options:{captchaToken} }));
     invalidate();
     return getContext();
   }
@@ -138,12 +139,12 @@ export function createAuthManager(client) {
     invalidate();
     return snapshot('signed_out');
   }
-  async function resendConfirmation(email) {
-    checkResult(await client.auth.resend({ type: 'signup', email: cleanEmail(email), options: { emailRedirectTo: pageUrl('login', { verified: '1' }) } }));
+  async function resendConfirmation(email,captchaToken) {
+    checkResult(await client.auth.resend({ type: 'signup', email: cleanEmail(email), options: { captchaToken,emailRedirectTo: pageUrl('login', { verified: '1' }) } }));
     return { sent: true };
   }
-  async function sendEmailCode(email) {
-    checkResult(await client.auth.signInWithOtp({ email: cleanEmail(email), options: { shouldCreateUser: false, emailRedirectTo: pageUrl('login') } }));
+  async function sendEmailCode(email,captchaToken) {
+    checkResult(await client.auth.signInWithOtp({ email: cleanEmail(email), options: { captchaToken,shouldCreateUser: false, emailRedirectTo: pageUrl('login') } }));
     return { sent: true };
   }
   async function verifyEmailCode(email, token) {

@@ -327,6 +327,16 @@ Object.assign(tr,{
 });
 Object.assign(tr,{'privacy.serviceNotes':'Hizmet tercihleri','privacy.serviceNotesText':'Berberler randevu hizmetiyle ilgili özel not tutabilir; bilgiler yalnızca ilgili berberle paylaşılır.','privacy.noShowText':'Gelmeyen randevu sayısı, hangi dükkanda olduğu açıklanmadan ilgili berberlere yalnızca sayı olarak gösterilir.'});
 Object.assign(tr,{'application.support':'Yönetime destek mesajı gönder','application.supportMessage':'Mesajın (10–1000 karakter, günde bir mesaj)','cards.first':'İlk kez','cards.repeat':'Tekrar müşteri'});
+Object.assign(tr,{'captcha.failed':'Güvenlik doğrulaması tamamlanamadı. Tekrar dene.','application.sendError':'Başvuru bu durumda gönderilemiyor. Bilgilerini yenileyip başvuru hakkını kontrol et.','application.supportLimit':'Günde bir destek mesajı gönderebilirsin.'});
+Object.assign(tr,{'panel.sharing':'Paylaşım','share.slug':'Dükkan bağlantısının kısa adı','share.slugHint':'3–40 karakter; küçük harf, rakam ve tire. Değiştirirsen eski QR ve bağlantı çalışmaz.','share.slugError':'3–40 karakterlik geçerli bir kısa ad gir.','share.slugTaken':'Bu kısa ad kullanılıyor. Başka bir ad seç.','share.copy':'Linki kopyala','share.copied':'Bağlantı kopyalandı.','share.whatsapp':'WhatsApp’ta paylaş','share.instagram':'Bu bağlantıyı Instagram profilinin biyografi alanına ekleyebilirsin.','share.print':'Dükkan camı için yazdır','share.scan':'Online randevu için okut','share.png':'QR PNG indir','share.svg':'QR SVG indir','share.qrAlt':'Dükkanın online randevu bağlantısının QR kodu','share.qrError':'QR kodu yüklenemedi. Bağlantıyı kopyalayabilir veya tekrar deneyebilirsin.'});
+Object.assign(tr,{
+'admin.tools':'Yönetim araçları','admin.users':'Kullanıcı yönetimi','admin.reports':'Yorum şikayetleri','admin.searchUsers':'Ad veya e-posta ile ara','admin.stat.users':'Kullanıcı','admin.stat.shops':'Dükkan','admin.stat.appointments':'Randevu','admin.stat.banned':'Engelli hesap','admin.banned':'İşlemleri engelli','admin.allowed':'İşlemleri açık','admin.ban':'Hesabı engelle','admin.unban':'Engeli kaldır','admin.confirmBan':'Kullanıcının işlem yetkisi değiştirilsin mi?','admin.reportReason':'Şikayet gerekçesi','admin.reportAction':'Şikayet kararı','admin.hideReview':'Yorumu gizle ve şikayeti kapat','admin.dismissReport':'Şikayeti reddet','admin.confirmReview':'Bu yorum inceleme kararı kaydedilsin mi?',
+'limits.operation':'İşlem sınırına ulaştın. Biraz sonra tekrar dene.','limits.banned':'Bu hesapla randevu veya yorum işlemi yapılamıyor.','limits.requests':'Talep sınırına ulaştın. En fazla 3 bekleyen talebin, aynı dükkanda 1 bekleyen talebin ve günde 10 talebin olabilir.',
+'auto.title':'Randevuları otomatik onayla','auto.off':'Kapalı: her talebi ben inceleyeyim','auto.trusted':'Güvenilen: en az 2 tamamlanan ziyaret, gelmedi kaydı yok','auto.all':'Tüm uygun talepler: doğrudan onayla',
+'review.reply':'Dükkan yanıtı','review.report':'Yorumu şikayet et','review.reportReason':'İnceleme gerekçesi','review.reportSent':'Şikayetin yönetime iletildi.','review.reportDuplicate':'Bu yorumu daha önce şikayet ettin.','review.hidden':'Bu yorum yönetim tarafından gizlendi.',
+'waitlist.title':'Bekleme taleplerim','waitlist.join':'Boşalırsa haber ver','waitlist.hint':'Uygun bir saat açılırsa uygulama içinden haber verilir. Saat ayrılmaz; ilk rezervasyon yapan alır.','waitlist.from':'En erken başlangıç','waitlist.to':'En geç bitiş','waitlist.timeError':'Bitiş saati başlangıçtan sonra olmalı.','waitlist.joined':'Bekleme talebin alındı.','waitlist.duplicate':'Bu hizmet ve gün için zaten bekleme talebin var.','waitlist.limit':'En fazla beş aktif bekleme talebin olabilir.','waitlist.shop':'Dükkan','waitlist.status.waiting':'Boş saat bekleniyor','waitlist.status.notified':'Boş saat bildirildi','waitlist.status.booked':'Randevu alındı','waitlist.status.expired':'Süresi doldu','booking.viewSlots':'Uygun saatlere bak'
+});
+Object.assign(tr,{'booking.autoConfirmed':'Randevun otomatik onaylandı. Ayrıntıları Randevularım sayfasından görebilirsin.'});
 export const dictionaries = Object.freeze({
   tr: Object.freeze(tr),
   en: Object.freeze(Object.fromEntries(Object.keys(tr).map(key => [key, ''])))
@@ -357,3 +367,5 @@ export function applyTranslations(root = document) {
     }
   }
 }
+
+

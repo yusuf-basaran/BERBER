@@ -1,3 +1,4 @@
+import {captchaToken,resetCaptcha} from './captcha.js';
 import {registrationApplication} from './application.js';
 import { auth, FormError, destination, consumeAuthCallback } from './auth.js';
 import { pageUrl } from './config.js';
@@ -32,8 +33,9 @@ function submit(form, task, busyKey = 'common.saving') {
     void withFormTask(form, async () => {
       clearFormErrors(form); message();
       const token = ++operation;
-      try { await task(formValues(form), token); }
+      try { const input=formValues(form);if(['register-form','password-form','email-form','resend-form'].includes(form.id))input.captchaToken=await captchaToken(form);await task(input, token); }
       catch (error) { if (!disposed && token === operation) showError(form, error); }
+      finally{resetCaptcha(form);}
     }, { busyKey });
   });
 }
@@ -50,7 +52,7 @@ for (const toggle of document.querySelectorAll('[data-password-toggle]')) {
 
 const resend = document.getElementById('resend-form');
 if (resend) submit(resend, async values => {
-  await auth.resendConfirmation(values.email);
+  await auth.resendConfirmation(values.email,values.captchaToken);
   message(t('auth.resendSent'));
 });
 
@@ -130,7 +132,7 @@ if (root.dataset.account === 'register') {
   submit(passwordForm, async values => {
     checking = true;
     try {
-      const context = await auth.signIn(values.email, values.password);
+      const context = await auth.signIn(values.email, values.password,values.captchaToken);
       passwordForm.elements.password.value = '';
       await handleContext(context);
     } catch (error) {
@@ -139,7 +141,7 @@ if (root.dataset.account === 'register') {
     } finally { checking = false; }
   }, 'auth.working');
   submit(emailForm, async values => {
-    await auth.sendEmailCode(values.email);
+    await auth.sendEmailCode(values.email,values.captchaToken);
     codeForm.elements.email.value = values.email.trim().toLowerCase();
     emailForm.hidden = true; codeForm.hidden = false;
     message(t('auth.otpSent')); codeForm.elements.code.focus();

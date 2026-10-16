@@ -2,7 +2,7 @@ import { supabase } from './supabase.js';
 import { demoLocations, demoBarbers } from './demo.js';
 import { t } from './i18n.js';
 import { isUuid } from './slots.js';
-const fields='id,shop_name,city,district,address,map_url,phone,whatsapp,bio,photo_url,avg_rating,review_count,is_active,cancel_hours_before';
+const fields='id,shop_name,city,district,address,map_url,phone,whatsapp,bio,photo_url,avg_rating,review_count,is_active,cancel_hours_before,slug';
 const result=value=>{if(value.error)throw value.error;return value.data;};
 export const categories=Object.freeze([
   ['Saç Kesimi','category.hair'],['Sakal','category.beard'],['Saç + Sakal','category.hairBeard'],['Cilt Bakımı','category.skin'],
@@ -35,7 +35,7 @@ export async function searchBarbers(values,{demo=false,signal}={}) {
 export async function getBarber(id,{demo=false}={}) {
   if(!isUuid(id))return null;
   if(demo)return demoBarbers.find(b=>b.id===id)||null;
-  const barber=result(await supabase.from('barbers').select(fields).eq('id',id).maybeSingle());
+  const barber=result(await supabase.from('barbers').select(fields).eq('id',id).eq('verification_status','approved').eq('is_active',true).maybeSingle());
   if(!barber)return null;
   const values=await Promise.all([
     supabase.from('services').select('id,barber_id,name,category,price,currency,duration_min,is_active').eq('barber_id',id).eq('is_active',true).order('price'),
@@ -43,9 +43,11 @@ export async function getBarber(id,{demo=false}={}) {
   ]);
   return {...barber,services:result(values[0])||[],hours:result(values[1])||[]};
 }
-export async function getPublicReviews(id,page=1,{demo=false}={}) {
+export async function getPublicReviews(id,page=1,{demo=false,manage=false}={}) {
   if(!isUuid(id)||!Number.isInteger(page)||page<1||page>1000)throw new RangeError(t('error.validation'));
   if(demo){const reviews=demoBarbers.find(barber=>barber.id===id)?.reviews||[];return {rows:reviews.slice((page-1)*10,page*10),total:reviews.length};}
-  const value=await supabase.from('reviews').select('id,appointment_id,barber_id,rating,comment,created_at',{count:'exact'}).eq('barber_id',id).order('created_at',{ascending:false}).order('id',{ascending:false}).range((page-1)*10,page*10-1);
+  let request=supabase.from('reviews').select('id,appointment_id,barber_id,rating,comment,created_at,barber_reply,barber_reply_at,is_hidden',{count:'exact'}).eq('barber_id',id).order('created_at',{ascending:false}).order('id',{ascending:false}).range((page-1)*10,page*10-1);if(!manage)request=request.eq('is_hidden',false);const value=await request;
   return {rows:result(value)||[],total:value.count||0};
 }
+
+export async function getBarberBySlug(slug){if(!/^[a-z0-9-]{3,40}$/.test(slug||''))return null;const row=result(await supabase.from('barbers').select('id').eq('slug',slug).eq('verification_status','approved').eq('is_active',true).maybeSingle());return row?getBarber(row.id):null;}

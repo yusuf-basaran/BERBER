@@ -1,3 +1,4 @@
+import {adminTools} from './admin-tools.js';
 import {isUuid} from './slots.js';
 import {documentPanel} from './application-documents.js';
 import {mountLayout} from './layout.js';
@@ -9,6 +10,7 @@ import {element as el,showState,showErrorState,errorMessage,formatDateTime,shopP
 mountLayout();
 const root=document.querySelector('[data-admin]'),message=document.querySelector('[data-admin-message]'),filter=document.querySelector('[data-admin-filter]'),list=document.querySelector('[data-admin-list]'),pager=document.querySelector('[data-admin-pager]'),detail=document.querySelector('[data-admin-detail]'),count=document.querySelector('[data-admin-count]');
 let disposed=false,epoch=0,listRun=0,detailRun=0,page=1,busy=false,authorized=false,activeId=null,timer=null;
+adminTools(root);
 const states=['pending','approved','rejected','suspended'],checks=['phone_called','map_checked','listing_checked','document_checked'];
 filter.elements.status.append(...states.map(value=>el('option',{text:t('admin.state.'+value),attrs:{value}})));
 function button(key,run,secondary=true){const node=el('button',{text:t(key),className:'button'+(secondary?' button--secondary':''),attrs:{type:'button'}});node.addEventListener('click',()=>void run(node));return node;}

@@ -5,7 +5,7 @@ import { categories } from './barbers.js';
 import { isUuid,calendarDate,bookingDates } from './slots.js';
 import { normalizePhone,localDate } from './ui.js';
 import { t } from './i18n.js';
-const shopFields='id,owner_id,shop_name,city,district,address,map_url,phone,whatsapp,bio,photo_url,avg_rating,review_count,is_active,created_at,cancel_hours_before,verification_status,instagram_url';
+const shopFields='id,owner_id,shop_name,city,district,address,map_url,phone,whatsapp,bio,photo_url,avg_rating,review_count,is_active,created_at,cancel_hours_before,verification_status,instagram_url,slug,auto_approve_mode';
 const serviceFields='id,barber_id,name,category,price,currency,duration_min,is_active';
 const fail=key=>{const error=new Error(t(key));error.userMessage=t(key);return error;};
 function result(response){if(response.error)throw response.error;return response.data;}
@@ -23,6 +23,7 @@ export function validateShop(values){
 export async function saveShop(values){const context=await owner();const current=await getOwnedShop();const input=validateShop(values);
   if(values.cancelHours!==undefined){const hours=Number(values.cancelHours);if(String(values.cancelHours).trim()===''||!Number.isInteger(hours)||hours<0||hours>8760)throw new FormError({cancelHours:t('manual.cancelHoursError')});input.cancel_hours_before=hours;}
   const instagram=String(values.instagramUrl||'').trim();if(instagram&&!/^https:\/\/(www\.)?instagram\.com\/[A-Za-z0-9_.]{1,30}\/?$/.test(instagram))throw new FormError({instagramUrl:t('application.instagramError')});input.instagram_url=instagram||null;
+  if(values.autoApprove!==undefined){if(!['off','trusted','all'].includes(values.autoApprove))throw new FormError({autoApprove:t('error.validation')});input.auto_approve_mode=values.autoApprove;}
   let request=current?supabase.from('barbers').update(input).eq('id',current.id).eq('owner_id',context.user.id):supabase.from('barbers').insert({...input,owner_id:context.user.id});
   const saved=result(await request.select(shopFields).maybeSingle());if(!saved)throw fail('error.recordChanged');return saved;
 }

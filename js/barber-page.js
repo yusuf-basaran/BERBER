@@ -1,7 +1,8 @@
+import {waitlistForm} from './waitlist.js';
 import {createFavoriteControls} from './favorite-button.js';
 import {mountGallery} from './gallery-view.js';
 import { mountLayout } from './layout.js';
-import { getBarber,getPublicReviews } from './barbers.js';
+import { getBarber,getBarberBySlug,getPublicReviews } from './barbers.js';
 import { reviewCard } from './reviews.js';
 import { auth,FormError,destination } from './auth.js';
 import { getSlots,bookingDates,slotLabel,calendarDate } from './slots.js';
@@ -10,16 +11,17 @@ import { pageUrl } from './config.js';
 import { t } from './i18n.js';
 import { element,shopPhoto,formatMoney,formatTime,formatDateTime,showState,showErrorState,errorMessage,showFormErrors,clearFormErrors,withFormTask,toast,safeHref } from './ui.js';
 mountLayout();
-const params=new URL(location.href).searchParams;const demo=params.get('demo')==='1';const id=params.get('id');
+const params=new URL(location.href).searchParams;const demo=params.get('demo')==='1';let id=params.get('id');
 const favorites=createFavoriteControls({demo});
 let disposeGallery=()=>{};
 const container=document.querySelector('[data-detail]');const form=document.getElementById('booking-form');
+const waitBox=element('div');form.after(waitBox);
 const slotBox=document.querySelector('[data-slots]');const summary=document.querySelector('[data-booking-summary]');
 const notice=document.querySelector('[data-booking-notice]');const panel=document.querySelector('[data-booking-panel]');
 const reviewBox=document.querySelector('[data-reviews]');let barber;let available=[];let service;let controller;let load=0;let reviewPage=1;
 document.querySelector('[data-demo]').hidden=!demo;
 function message(value='',error=false){notice.textContent=value;notice.hidden=!value;notice.setAttribute('role',error?'alert':'status');notice.classList.toggle('notice--error',error);}
-function clearSelection(){available=[];form.elements.startAt.value='';summary.textContent='';slotBox.replaceChildren();}
+function clearSelection(){waitBox.replaceChildren();available=[];form.elements.startAt.value='';summary.textContent='';slotBox.replaceChildren();}
 function serviceSummary(start='') {
   if(!service)return;summary.replaceChildren(element('strong',{text:service.name}),element('p',{text:`${formatMoney(service.price,service.currency)} · ${t('common.minutes',{count:service.duration_min})}`}),...(start?[element('p',{text:t('booking.selected',{time:formatDateTime(start)})})]:[]));
 }
@@ -31,7 +33,7 @@ async function slots() {
   try{
     const values=await getSlots(id,service.id,form.elements.date.value,{signal:controller.signal});if(current!==load)return;
     available=values;slotBox.setAttribute('aria-busy','false');
-    if(!values.length){showState(slotBox,{key:'booking.noSlots'});return;}
+    if(!values.length){showState(slotBox,{key:'booking.noSlots'});waitBox.append(waitlistForm(id,service.id,form.elements.date.value));return;}
     slotBox.replaceChildren(...values.map((slot,index)=>{
       const input=element('input',{attrs:{type:'radio',name:'slot',value:slot.start_at,id:`slot-${index}`}});
       input.addEventListener('change',()=>{form.elements.startAt.value=slot.start_at;serviceSummary(slot.start_at);});
@@ -81,13 +83,13 @@ form.addEventListener('submit',event=>{
       const context=await auth.getContext();if(context.status!=='ready'){window.location.assign(destination(context,pageUrl('barber',{id,service:form.elements.serviceId.value,date:form.elements.date.value})));return;}
       const startAt=form.elements.startAt.value;if(!available.some(slot=>slot.start_at===startAt)||Date.parse(startAt)<=Date.now())throw new FormError({startAt:t('error.slotRequired')});
       const saved=await requestAppointment({barberId:id,serviceId:form.elements.serviceId.value,startAt,note:form.elements.note.value});
-      form.hidden=true;slotBox.replaceChildren();summary.replaceChildren(element('h3',{text:t('booking.submittedTitle')}),element('p',{text:t('booking.sent')}),element('p',{text:`${formatDateTime(saved.start_at)} · ${formatMoney(saved.price_at_booking,saved.currency_at_booking)}`}),element('a',{text:t('booking.viewAppointments'),className:'button',attrs:{href:pageUrl('appointments')}}));
+      form.hidden=true;slotBox.replaceChildren();waitBox.replaceChildren();summary.replaceChildren(element('h3',{text:t(saved.status==='confirmed'?'status.confirmed':'booking.submittedTitle')}),element('p',{text:t(saved.status==='confirmed'?'booking.autoConfirmed':'booking.sent')}),element('p',{text:`${formatDateTime(saved.start_at)} · ${formatMoney(saved.price_at_booking,saved.currency_at_booking)}`}),element('a',{text:t('booking.viewAppointments'),className:'button',attrs:{href:pageUrl('appointments')}}));
     }catch(error){if(error instanceof FormError){showFormErrors(form,error.fields);message(t(error.fields.startAt?'error.slotRequired':'error.validation'),true);}else message(errorMessage(error),true);if(error.code==='P2007')notice.append(element('a',{text:t('profile.title'),attrs:{href:pageUrl('profile')}}));if(error.code==='23P01')await slots().then(()=>message(t('error.conflict'),true));}
   });
 });
 async function initialize() {
   panel.hidden=true;document.querySelector('[data-detail-columns]').hidden=true;showState(container,{kind:'loading',key:'common.loading'});
-  try{barber=await getBarber(id,{demo});if(!barber){container.replaceChildren(element('h1',{text:t('barber.notFound')}),element('a',{text:t('nav.home'),className:'text-button',attrs:{href:pageUrl('home')}}));return;}
+  try{const slug=location.pathname.match(/^\/b\/([a-z0-9-]{3,40})\/?$/)?.[1];barber=slug?await getBarberBySlug(slug):await getBarber(id,{demo});if(barber)id=barber.id;if(!barber){container.replaceChildren(element('h1',{text:t('barber.notFound')}),element('a',{text:t('nav.home'),className:'text-button',attrs:{href:pageUrl('home')}}));return;}
     detail(barber);void favorites.sync();document.querySelector('[data-detail-columns]').hidden=false;const dates=bookingDates();form.elements.date.min=dates.min;form.elements.date.max=dates.max;form.elements.date.value=dates.min;
     const date=params.get('date');try{calendarDate(date);if(date>=dates.min&&date<=dates.max)form.elements.date.value=date;}catch{}
     const serviceId=params.get('service');if(barber.services.some(service=>service.id===serviceId))form.elements.serviceId.value=serviceId;

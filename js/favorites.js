@@ -17,7 +17,7 @@ export async function setFavorite(barberId,selected){
 }
 export async function getFavorites(page=1){
   if(!Number.isInteger(page)||page<1||page>1000)throw new RangeError(t('error.validation'));const id=await user();
-  const {data,count}=result(await supabase.from('favorites').select('barber_id,created_at,barber:barbers(id,shop_name,city,district,photo_url,avg_rating,review_count,is_active)',{count:'exact'})
+  const {data,count}=result(await supabase.from('favorites').select('barber_id,created_at,barber:barbers(id,shop_name,city,district,photo_url,photo_thumbnail_url,avg_rating,review_count,is_active)',{count:'exact'})
     .eq('user_id',id).order('created_at',{ascending:false}).order('barber_id').range((page-1)*12,page*12-1));
   return {rows:(data||[]).filter(row=>row.barber).map(row=>row.barber),total:count||0};
 }

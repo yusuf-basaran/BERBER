@@ -94,6 +94,13 @@ export function errorMessage(error, fallback = 'error.generic') {
   if(error?.code==='P2001')return t('manual.cancelClosed');
   if(error?.code==='P2002')return t('manual.unavailable');
   if(error?.code==='P2004')return t('approval.unavailable');
+  if(error?.code==='P2009')return t('limits.operation');
+  if(error?.code==='P2010')return t('limits.banned');
+  if(error?.code==='P2011')return t('limits.requests');
+  if(error?.code==='P2012')return t('waitlist.limit');
+  if(error?.code==='P2006')return t('application.sendError');
+  if(error?.code==='P2007')return t('profile.complete');
+  if(error?.code==='P2008')return t('application.supportLimit');
   if(error?.code==='P2005')return t('admin.changed');
   if (error?.userMessage) return error.userMessage;
   if (error?.status === 429) return t('error.rateLimit');
@@ -270,6 +277,6 @@ export function showErrorState(container,error,retry) {
 export function shopPhoto(barber,{large=false}={}) {
   const frame=element('div',{className:`shop-photo${large?' shop-photo--large':''}`});
   const fallback=()=>{frame.replaceChildren(element('span',{text:String(barber.shop_name||'').split(/\s+/).filter(Boolean).slice(0,2).map(word=>word[0]).join('').toLocaleUpperCase('tr-TR'),className:'shop-monogram',attrs:{'aria-hidden':'true'}}));frame.setAttribute('role','img');frame.setAttribute('aria-label',t('common.noPhoto'));};
-  const src=safeHref(barber.photo_url,{image:true});
+  const src=safeHref(!large&&barber.photo_thumbnail_url?barber.photo_thumbnail_url:barber.photo_url,{image:true});
   if(src){const image=element('img',{attrs:{src,alt:barber.shop_name,loading:large?'eager':'lazy',decoding:'async'}});image.addEventListener('error',fallback,{once:true});frame.append(image);}else fallback();return frame;
 }
