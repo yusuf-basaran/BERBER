@@ -11,7 +11,7 @@ function field(form,name,key,{type='text',options,...attrs}={}){
   form.append(el('div',{className:'field',attrs:{'data-field':''}},[el('label',{text:t(key),attrs:{for:id}}),input]));return input;
 }
 function button(key,run){const node=el('button',{text:t(key),className:'button button--secondary',attrs:{type:'button'}});node.addEventListener('click',()=>void run(node));return node;}
-export async function manualForm(container,current,shop,onSaved){
+export async function manualForm(container,current,shop,onSaved,seed={}){
   showState(container,{kind:'loading',key:'common.loading'});const services=(await getServices()).filter(row=>row.is_active);if(!current())return;
   container.replaceChildren(el('h2',{text:t('panel.manual')}),el('p',{text:t('manual.hint'),className:'notice'}));
   if(!services.length){showState(container,{key:'barber.noServices'});return;}
@@ -35,16 +35,17 @@ export async function manualForm(container,current,shop,onSaved){
     showState(slotBox,{kind:'loading',key:'common.loading'});
     try{const rows=await getSlots(shop.id,service.value,date.value);if(!current()||attempt!==slotRun)return;slots=rows;slotBox.replaceChildren(el('legend',{text:t('field.time')}));slotBox.setAttribute('aria-busy','false');
       if(!rows.length)slotBox.append(el('p',{text:t('booking.noSlots')}));
-      for(const row of rows){const id=`manual-slot-${++sequence}`,input=el('input',{attrs:{type:'radio',name:'startAt',id,value:row.start_at,required:true}});input.addEventListener('change',()=>{selected=row.start_at;});slotBox.append(el('label',{className:'slot-choice',attrs:{for:id}},[input,el('span',{text:slotLabel(row.start_at,rows)})]));}
+      for(const row of rows){const id=`manual-slot-${++sequence}`,input=el('input',{attrs:{type:'radio',name:'startAt',id,value:row.start_at,required:true}});input.addEventListener('change',()=>{selected=row.start_at;});if(seed.startAt===row.start_at){input.checked=true;selected=row.start_at;}slotBox.append(el('label',{className:'slot-choice',attrs:{for:id}},[input,el('span',{text:slotLabel(row.start_at,rows)})]));}
     }catch(error){if(current()&&attempt===slotRun)showErrorState(slotBox,error,load);}
   };
-  service.addEventListener('change',()=>void load());date.addEventListener('change',()=>void load());
+  service.addEventListener('change',()=>{seed={};void load();});date.addEventListener('change',()=>{seed={};void load();});
   field(form,'note','field.note',{maxlength:1000});form.append(el('button',{text:t('panel.manual'),className:'button',attrs:{type:'submit'}}));container.append(form);
   form.addEventListener('submit',event=>{event.preventDefault();void withFormTask(form,async()=>{clearFormErrors(form);try{
     if(!slots.some(row=>row.start_at===selected))selected='';
     await createManual(shop.id,{name:name.value,phone:phone.value,customerId,serviceId:service.value,startAt:selected,note:form.elements.note.value});
     if(current()){toast(t('manual.created'),{type:'success'});onSaved();}
   }catch(error){if(error.fields)showFormErrors(form,error.fields);toast(errorMessage(error),{type:'error'});if(error.code==='23P01')await load();}});});
+  if(services.some(row=>row.id===seed.serviceId)&&seed.date>=dates.min&&seed.date<=dates.max){service.value=seed.serviceId;date.value=seed.date;await load();}
 }
 export async function blockedList(container,current,shop){
   showState(container,{kind:'loading',key:'common.loading'});const rows=await getBlocked(shop.id);if(!current())return;

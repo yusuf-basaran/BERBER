@@ -22,7 +22,7 @@
 | F16 | VAR | v3_03, review-management.js | — |
 | F17 | VAR | v3_02, panel ayarı | — |
 | F18 | KISMİ | v3_04–05, waitlist.js | F9 e-posta kuyruğu bağlantısı |
-| F19 | KISMİ | panel-page.js, get_barber_dashboard | Hafta görünümü ve dönem istatistiği |
+| F19 | VAR | v3_06, panel-calendar.js | — |
 | F20 | YOK | — | Harita ve mesafe |
 | F21 | KISMİ | noindex sayfaları | Statik SEO ve önizleme |
 | F22 | YOK | — | Kampanya |
