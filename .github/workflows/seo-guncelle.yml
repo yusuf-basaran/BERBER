@@ -1,5 +1,12 @@
 name: SEO sayfalarını güncelle
 on:
+  push:
+    branches: [main]
+    paths:
+      - scripts/seo-uret.js
+      - lib/seo.cjs
+      - js/i18n.js
+      - .github/workflows/seo-guncelle.yml
   schedule:
     - cron: '35 4 * * *'
   workflow_dispatch:
@@ -25,3 +32,4 @@ jobs:
             git commit -m "SEO sayfalarını güncelle"
             git push
           fi
+
