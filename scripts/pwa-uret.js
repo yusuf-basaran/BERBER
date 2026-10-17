@@ -12,7 +12,7 @@ async function generate({outputRoot=root}={}){
  const assets=['css/style.css','css/responsive.css','js/i18n.js','js/offline-page.js','assets/pwa-192.png','assets/pwa-512.png'];
  const template=await fs.readFile(path.join(root,'lib/pwa-worker.template.js'),'utf8'),hash=createHash('sha256').update(offline).update(template);
  for(const asset of assets)hash.update(await fs.readFile(path.join(root,asset)));
- const version=hash.digest('hex').slice(0,16);await fs.writeFile(path.join(target,'sw.js'),template.replace('__CACHE_VERSION__',version));
+ const version=hash.digest('hex').slice(0,16);await fs.writeFile(path.join(target,'sw.js'),template.replace('__CACHE_VERSION__',version).replace('__PUSH_BODY__',JSON.stringify(tr['push.body'])));
  return {version,staticAssets:assets.length+1};
 }
 if(require.main===module)generate().then(r=>console.log(JSON.stringify(r))).catch(error=>{console.error(error.message);process.exitCode=1;});

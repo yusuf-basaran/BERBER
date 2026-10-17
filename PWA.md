@@ -1,6 +1,6 @@
 # Ana ekrana ekleme ve çevrimdışı kabuk
 
-17 Ekim 2026. F24'ün PWA bölümü eklendi. Push aboneliği, VAPID ve bildirim/hatırlatma gönderimi bu pakette yoktur; F24 bu nedenle kısmi durumdadır. Veritabanı veya canlı SQL değiştirilmedi.
+17 Ekim 2026'da PWA çekirdeği eklendi. 18 Ekim'de isteğe bağlı cihaz bildirimleri de tamamlandı; abonelik, VAPID, kuyruk ve iki yeni migration ayrıntıları [PUSH.md](PUSH.md) içindedir. Aşağıdaki kabuk önbelleği ve güncelleme davranışı korunur.
 
 ## Davranış
 

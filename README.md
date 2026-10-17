@@ -1,5 +1,7 @@
 # BERBER
 
+PWA ve cihaz bildirimleri için [PWA.md](PWA.md) ve [PUSH.md](PUSH.md) dosyalarına bakın. Mevcut projede `v3_10_push.sql` → `send-push` Edge yayını → `v3_11_push_zamanlama.sql` sırası tamamlandı; yeniden uygulamayın. Diğer genişletmelerin güncel durumu [GENISLETME-DENETIMI.md](GENISLETME-DENETIMI.md) içindedir.
+
 Yönetim paneli, kararlar ve ilk yönetici kurulumu için [V2A üçüncü aşama raporuna](V2A-ASAMA-3.md) bakın. Yeni migration: `supabase/v2a_02_admin_paneli.sql`. Yönetici hesabında TOTP zorunludur.
 
 Berber onayı altyapısı için [V2A ikinci aşama raporuna](V2A-ASAMA-2.md) bakın. Yeni migration: `supabase/v2a_01_berber_onayi.sql`. Admin karar ekranı sonraki aşamadadır.

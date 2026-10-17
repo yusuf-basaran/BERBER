@@ -462,3 +462,6 @@ input:not([type=checkbox]):not([type=radio]),select,textarea{background:var(--yu
 .offline-page img { display:block; margin-block-end:var(--bosluk-5); }
 .offline-page .text-button { display:inline-flex; align-items:center; min-height:44px; margin-inline-start:var(--bosluk-4); }
 @media print { .pwa-notices { display:none!important; } }
+
+.push-settings { border-top:1px solid var(--kenarlik); margin-block-start:var(--bosluk-5); padding-block-start:var(--bosluk-5); }
+.push-settings button { min-height:44px; }

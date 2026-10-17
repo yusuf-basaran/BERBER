@@ -229,7 +229,7 @@ export function bindLogout(root = document) {
     event.preventDefault();
     if (button.disabled) return;
     button.disabled = true;
-    try { await signOut(); window.location.assign(pageUrl('home')); }
+    try { try{await Promise.race([import('./push.js').then(module=>module.disableDevicePush()),new Promise(resolve=>setTimeout(resolve,4000))]);}catch{}await signOut(); window.location.assign(pageUrl('home')); }
     catch (error) { toast(errorMessage(error), { type: 'error' }); button.disabled = false; }
   };
   root.addEventListener('click', handler);

@@ -2,3 +2,6 @@ project_id = "berber"
 
 [functions.recovery-login]
 verify_jwt = true
+
+[functions.send-push]
+verify_jwt = true

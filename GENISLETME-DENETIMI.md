@@ -1,6 +1,6 @@
 # Genişletme durum denetimi
 
-17 Ekim 2026 güncellemesi. İkinci paket ayrıntıları GENISLETME-ASAMA-2.md dosyasındadır. Aşamalar arasında beklemeden devam etme yetkisi geçerlidir.
+18 Ekim 2026 güncellemesi. İkinci paket ayrıntıları GENISLETME-ASAMA-2.md dosyasındadır. Aşamalar arasında beklemeden devam etme yetkisi geçerlidir.
 
 | Özellik | Durum | Bulunan dosya/tablo | Eksik kalan |
 |---|---|---|---|
@@ -27,6 +27,6 @@
 | F21 | VAR | scripts/seo-uret.js, api/berber-onizleme.js, SEO-ONIZLEME.md | — |
 | F22 | VAR | promotions, v3_08_kampanyalar.sql, panel-promotions.js, KAMPANYALAR.md | — |
 | F23 | VAR | loyalty_progress, loyalty_redemptions, v3_09_sadakat.sql, SADAKAT.md | — |
-| F24 | KISMİ | manifest.webmanifest, sw.js, pwa.js, PWA.md | Push aboneliği, VAPID ve bildirim/hatırlatma gönderimi |
+| F24 | VAR | manifest.webmanifest, sw.js, push.js, v3_10–11, send-push, PWA.md, PUSH.md | Hatırlatma üreticisi ayrıca F9 kapsamında; gerçek cihaz teslimatı OS iznine bağlı |
 | F25 | KISMİ | i18n.js | İngilizce sözlük ve hukuki sayfalar |
 | F26 | YOK | appointments_no_overlap | Çalışan geçiş planı ve uygulama |
