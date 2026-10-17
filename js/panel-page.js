@@ -1,4 +1,5 @@
 import {loyaltyPanel} from './panel-loyalty.js';
+import {whatsappReminderLink} from './reminders.js';
 import {promotionsPanel} from './panel-promotions.js';
 import {promotionSnapshot} from './promotions.js';
 import {coordinatePicker} from './maps.js';
@@ -88,6 +89,7 @@ function requestCard(row,reload){const start=row.status==='counter_proposed'?row
   if(row.status==='confirmed'&&Date.parse(start)<=Date.now())actions.append(button('manual.noShow',node=>mutation(node,'manual.noShowConfirm',async()=>{await api.manageRequest(row.id,'no_show');await reload();})));
   if(row.customer_id)actions.append(button(row.customer_blocked?'manual.unblock':'manual.block',node=>mutation(node,row.customer_blocked?'manual.unblockConfirm':'manual.blockConfirm',async()=>{await setBlocked(shop.id,row.customer_id,!row.customer_blocked);await reload();})));
   if(row.status==='confirmed'&&Date.parse(row.end_at)<=Date.now())actions.append(button('panel.complete',node=>mutation(node,'panel.completeConfirm',async()=>{await api.manageRequest(row.id,'completed');await reload();})));
+  const reminder=whatsappReminderLink(row,shop);if(reminder)actions.append(reminder);
   card.append(el('span',{className:'status-badge',text:t(row.prior_visits>0?'cards.repeat':'cards.first')}));if(row.has_private_note)card.append(el('span',{className:'status-badge',text:t('cards.hasNote')}));card.append(actions,customerCardControl(row));return card;
 }
 function requestModal(row,status,reload){const form=el('form',{className:'panel-form'});let selected='',sequence=0,closed=false;let date,slots;

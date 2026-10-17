@@ -12,7 +12,7 @@
 | F6 | VAR | v2_01, manual.js | — |
 | F7 | VAR | musteriler.html, customer-cards.js, v2a_07 | — |
 | F8 | VAR | ics.js | — |
-| F9 | YOK | — | Kuyruk, gönderim, zamanlama |
+| F9 | KISMİ | v3_12–13, send-reminders, reminders.js, HATIRLATMALAR.md | Uygulama içi/push/WhatsApp tamam; e-posta kuyruğu, sağlayıcı, tercih ve günlük kota eksik |
 | F10 | VAR | v2_03, v2_06, gallery.js | — |
 | F11 | VAR | v2_02, favoriler.html | — |
 | F12 | VAR | v2_05, sharing.js, yazdir.html, print.css | — |

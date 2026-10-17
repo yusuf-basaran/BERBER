@@ -1,5 +1,7 @@
 # BERBER
 
+24/2 saat uygulama içi hatırlatmalar ve berber WhatsApp hazır mesajı için [HATIRLATMALAR.md](HATIRLATMALAR.md) dosyasına bakın. Mevcut projede v3_12–13 ve send-reminders yayımlandı. E-posta hatırlatma sağlayıcısı henüz bağlı değildir.
+
 PWA ve cihaz bildirimleri için [PWA.md](PWA.md) ve [PUSH.md](PUSH.md) dosyalarına bakın. Mevcut projede `v3_10_push.sql` → `send-push` Edge yayını → `v3_11_push_zamanlama.sql` sırası tamamlandı; yeniden uygulamayın. Diğer genişletmelerin güncel durumu [GENISLETME-DENETIMI.md](GENISLETME-DENETIMI.md) içindedir.
 
 Yönetim paneli, kararlar ve ilk yönetici kurulumu için [V2A üçüncü aşama raporuna](V2A-ASAMA-3.md) bakın. Yeni migration: `supabase/v2a_02_admin_paneli.sql`. Yönetici hesabında TOTP zorunludur.

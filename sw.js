@@ -1,5 +1,5 @@
 /* Public offline shell only. Never persist account pages, business data or API responses. */
-const CACHE='berber-shell-b23147ae2beb4953';
+const CACHE='berber-shell-db30192d1b8a3d8b';
 const OFFLINE='/cevrimdisi';
 const PUSH_BODY="Yeni bir bildirimin var. Görmek için BERBER hesabına giriş yap.";
 const STATIC=[OFFLINE,'/css/style.css','/css/responsive.css','/js/i18n.js','/js/offline-page.js','/assets/pwa-192.png','/assets/pwa-512.png'];
